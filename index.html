@@ -140,8 +140,60 @@
         .modal-embed{position:relative;padding-top:56.25%;background:#000}
         .modal-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
 
-        .fi{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
+        /* ANIMATIONS */
+        .fi{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1)}
         .fi.v{opacity:1;transform:none}
+        .fi-d1{transition-delay:.1s}.fi-d2{transition-delay:.2s}.fi-d3{transition-delay:.3s}
+        .fi-d4{transition-delay:.35s}.fi-d5{transition-delay:.4s}.fi-d6{transition-delay:.45s}
+
+        @keyframes pulse-ring{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.4);opacity:0}}
+        .n-logo::after{content:'';position:absolute;inset:-4px;border-radius:16px;border:2px solid var(--accent);opacity:0;animation:pulse-ring 2.5s ease-out infinite;pointer-events:none}
+        .n-logo{position:relative}
+
+        .hero-avatar{animation:avatar-float 6s ease-in-out infinite}
+        @keyframes avatar-float{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-8px) rotate(1deg)}75%{transform:translateY(4px) rotate(-1deg)}}
+
+        .hero-avatar-wrap{position:relative;display:inline-block}
+        .hero-avatar-wrap::before{content:'';position:absolute;inset:-6px;border-radius:28px;background:conic-gradient(from 0deg,var(--accent),var(--purple),var(--blue),var(--accent));opacity:.5;filter:blur(12px);animation:glow-rotate 4s linear infinite;z-index:-1}
+        @keyframes glow-rotate{0%{filter:blur(12px) hue-rotate(0deg)}100%{filter:blur(12px) hue-rotate(360deg)}}
+
+        .vid-card{perspective:800px}
+        .vid-card .vid-emb{transition:transform .4s ease;transform-style:preserve-3d}
+        .vid-card:hover .vid-emb{transform:rotateX(2deg) rotateY(-2deg) scale(1.02)}
+        .vid-card::after{content:'';position:absolute;inset:0;border-radius:16px;opacity:0;transition:opacity .4s;pointer-events:none;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(239,68,68,.08),transparent 60%)}
+        .vid-card:hover::after{opacity:1}
+
+        .game-card{transition:all .3s cubic-bezier(.4,0,.2,1)}
+        .game-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 16px 40px rgba(0,0,0,.3)}
+        .game-card:hover .g-emoji{animation:emoji-bounce .5s ease}
+        @keyframes emoji-bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.3) rotate(-5deg)}}
+
+        .btn-red{position:relative;overflow:hidden}
+        .btn-red::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;background:rgba(255,255,255,.15);border-radius:50%;transform:translate(-50%,-50%);transition:width .6s,height .6s}
+        .btn-red:hover::before{width:300px;height:300px}
+
+        .pl-card{transition:all .35s cubic-bezier(.4,0,.2,1)}
+        .pl-card:hover{transform:translateY(-8px) scale(1.01)}
+        .pl-play{transition:transform .3s,box-shadow .3s}
+        .pl-card:hover .pl-play{transform:scale(1.15);box-shadow:0 6px 32px rgba(239,68,68,.6)}
+
+        .ac-row{transition:all .3s}
+        .ac-row:hover{transform:translateX(6px);background:var(--surface);border-radius:12px;margin:0 -12px;padding:16px 12px}
+
+        .scroll-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;animation:scroll-bounce 2s ease-in-out infinite;z-index:2}
+        .scroll-hint span{font-size:11px;color:var(--text2);letter-spacing:2px;text-transform:uppercase}
+        .scroll-hint .mouse{width:24px;height:38px;border:2px solid rgba(255,255,255,.2);border-radius:12px;position:relative}
+        .scroll-hint .mouse::after{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:3px;height:8px;background:var(--accent);border-radius:2px;animation:scroll-wheel 1.5s ease-in-out infinite}
+        @keyframes scroll-bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+        @keyframes scroll-wheel{0%,100%{opacity:1;transform:translateX(-50%) translateY(0)}100%{opacity:0;transform:translateX(-50%) translateY(12px)}}
+
+        #particles-canvas{position:absolute;inset:0;z-index:1;pointer-events:none}
+
+        .s-title{position:relative;display:inline-block}
+        .s-title::after{content:'';display:block;width:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--purple));border-radius:2px;margin-top:12px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+        .s-head.v .s-title::after{width:60px}
+
+        .scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--purple));z-index:200;transition:width .1s;box-shadow:0 0 10px var(--glow)}
 
         @media(max-width:900px){
             .pl-grid{grid-template-columns:1fr 1fr}
@@ -159,6 +211,8 @@
     </style>
 </head>
 <body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
 
 <nav id="nav">
     <a href="index.html" class="n-brand">
@@ -178,9 +232,9 @@
 </nav>
 
 <section class="hero">
-    <div class="hero-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div><div class="grid-bg"></div></div>
+    <div class="hero-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div><div class="grid-bg"></div><canvas id="particles-canvas"></canvas></div>
     <div class="hero-content">
-        <div style="width:96px;height:96px;border-radius:24px;overflow:hidden;box-shadow:0 8px 40px rgba(239,68,68,.25);margin-bottom:28px" class="fi"><img src="avatar.webp" alt="Brother Games" style="width:100%;height:100%;object-fit:cover"></div>
+        <div class="hero-avatar-wrap fi" style="margin-bottom:28px"><div class="hero-avatar" style="width:96px;height:96px;border-radius:24px;overflow:hidden;box-shadow:0 8px 40px rgba(239,68,68,.25)"><img src="avatar.webp" alt="Brother Games" style="width:100%;height:100%;object-fit:cover"></div></div>
         <div class="h-chip fi"><i></i> Nowe filmy co tydzien</div>
         <h1 class="fi">Brother<br><em>Games</em></h1>
         <p class="fi">Gamingowy kanal na YouTube. <strong>Minecraft, RLCraft, mapy adventure, League of Legends</strong> i wiecej. Gramy, komentujemy, budujemy — razem z Wami.</p>
@@ -195,10 +249,10 @@
             </a>
         </div>
     </div>
+    <div class="scroll-hint"><div class="mouse"></div><span>Scroll</span></div>
 </section>
 
 <!-- NAJNOWSZY FILM -->
-<section id="videos" style="padding-bottom:40px">
     <div class="s-head fi">
         <div class="s-tag" style="color:var(--accent)">Najnowszy material</div>
         <h2 class="s-title">Uwiezieni w Petli Czasu</h2>
@@ -218,27 +272,27 @@
         <h2 class="s-title">Wszystkie materialy</h2>
     </div>
     <div class="vid-grid">
-        <div class="vid-card fi">
+        <div class="vid-card fi fi-d1">
             <div class="vid-emb"><iframe src="https://www.youtube.com/embed/A2YZgB2i9Ew" title="WILCZY GLOD" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
             <div class="vid-info"><h4>Minecraft: WILCZY GLOD | Historia, Ktora Zostaje w Glowie... i Sercu</h4><span>81 wyswietlen</span></div>
         </div>
-        <div class="vid-card fi">
+        <div class="vid-card fi fi-d2">
             <div class="vid-emb"><iframe src="https://www.youtube.com/embed/Bc3es3-pds0" title="Nowa Ja | Nawiedzony dom?" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
             <div class="vid-info"><h4>Nowa Ja | Nawiedzony dom?</h4><span>64 wyswietlenia</span></div>
         </div>
-        <div class="vid-card fi">
+        <div class="vid-card fi fi-d3">
             <div class="vid-emb"><iframe src="https://www.youtube.com/embed/dj8gOtpdQzk" title="RLCraft #1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
             <div class="vid-info"><h4>RLCraft #1 | Minecraft na modach</h4><span>Brother Games</span></div>
         </div>
-        <div class="vid-card fi">
+        <div class="vid-card fi fi-d4">
             <div class="vid-emb"><iframe src="https://www.youtube.com/embed/pVw8KFNWsCM" title="Ciemna strona slonca" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
             <div class="vid-info"><h4>Ciemna strona slonca - Porabane</h4><span>Brother Games</span></div>
         </div>
-        <div class="vid-card fi">
+        <div class="vid-card fi fi-d5">
             <div class="vid-emb"><iframe src="https://www.youtube.com/embed/sGDAV-E6z-I" title="Wyspa Mrozu cz.1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
             <div class="vid-info"><h4>Wyspa Mrozu I cz.1</h4><span>Brother Games</span></div>
         </div>
-        <div class="vid-card fi">
+        <div class="vid-card fi fi-d6">
             <div class="vid-emb"><iframe src="https://www.youtube.com/embed/cvFqMuPbyPg" title="Wyspa Mrozu cz.2" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
             <div class="vid-info"><h4>Wyspa Mrozu I cz.2 - Troche zimno sie zrobilo</h4><span>Brother Games</span></div>
         </div>
@@ -259,7 +313,7 @@
         <p class="s-desc">Kliknij playliste zeby ja odtworzyc</p>
     </div>
     <div class="pl-grid">
-        <div class="pl-card fi" onclick="openModal('PLdPTixy4ir50Do5YrkqzhY_0RHKhGdm6J','Dzien zaglady - seria fabularna')">
+        <div class="pl-card fi fi-d1" onclick="openModal('PLdPTixy4ir50Do5YrkqzhY_0RHKhGdm6J','Dzien zaglady - seria fabularna')">
             <div class="pl-thumb">
                 <img src="https://i4.ytimg.com/vi/3pJOL26OdE8/hqdefault.jpg" alt="Dzien zaglady" loading="lazy">
                 <div class="pl-overlay"><div class="pl-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
@@ -270,7 +324,7 @@
                 <p>Playlista fabularna</p>
             </div>
         </div>
-        <div class="pl-card fi" onclick="openModal('PLdPTixy4ir51-f4ZTkDinVG9jlf0cg9n9','Dzien Zaglady 2024')">
+        <div class="pl-card fi fi-d2" onclick="openModal('PLdPTixy4ir51-f4ZTkDinVG9jlf0cg9n9','Dzien Zaglady 2024')">
             <div class="pl-thumb">
                 <img src="https://i3.ytimg.com/vi/NN53l4oebY0/hqdefault.jpg" alt="Dzien Zaglady 2024" loading="lazy">
                 <div class="pl-overlay"><div class="pl-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
@@ -281,7 +335,7 @@
                 <p>Nowa wersja serii</p>
             </div>
         </div>
-        <div class="pl-card fi" onclick="openModal('PLdPTixy4ir50OoQ8MvmWdpdFTuL-L0dRd','Serie zmodowane')">
+        <div class="pl-card fi fi-d3" onclick="openModal('PLdPTixy4ir50OoQ8MvmWdpdFTuL-L0dRd','Serie zmodowane')">
             <div class="pl-thumb">
                 <img src="https://i2.ytimg.com/vi/U4DxeiMwH-A/hqdefault.jpg" alt="Serie zmodowane" loading="lazy">
                 <div class="pl-overlay"><div class="pl-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
@@ -302,14 +356,14 @@
         <h2 class="s-title">Gry na kanale</h2>
     </div>
     <div class="games-grid">
-        <div class="game-card fi"><div class="g-emoji">⛏️</div><h4>Minecraft</h4><p>Vanilla, mapy, serwery</p></div>
-        <div class="game-card fi"><div class="g-emoji">🐉</div><h4>RLCraft</h4><p>Hardcore survival mod</p></div>
-        <div class="game-card fi"><div class="g-emoji">⚔️</div><h4>League of Legends</h4><p>Ranked i normalne</p></div>
-        <div class="game-card fi"><div class="g-emoji">🏰</div><h4>Neverwinter</h4><p>MMORPG</p></div>
-        <div class="game-card fi"><div class="g-emoji">🎭</div><h4>Dragon Survival</h4><p>Serwer RPG</p></div>
-        <div class="game-card fi"><div class="g-emoji">🌍</div><h4>Brother World</h4><p>Serwer dla widzow</p></div>
-        <div class="game-card fi"><div class="g-emoji">🧩</div><h4>Mapy Adventure</h4><p>Custom maps MC</p></div>
-        <div class="game-card fi"><div class="g-emoji">🔧</div><h4>Modpacki</h4><p>ATM, DawnCraft i wiecej</p></div>
+        <div class="game-card fi fi-d1"><div class="g-emoji">⛏️</div><h4>Minecraft</h4><p>Vanilla, mapy, serwery</p></div>
+        <div class="game-card fi fi-d2"><div class="g-emoji">🐉</div><h4>RLCraft</h4><p>Hardcore survival mod</p></div>
+        <div class="game-card fi fi-d3"><div class="g-emoji">⚔️</div><h4>League of Legends</h4><p>Ranked i normalne</p></div>
+        <div class="game-card fi fi-d4"><div class="g-emoji">🏰</div><h4>Neverwinter</h4><p>MMORPG</p></div>
+        <div class="game-card fi fi-d1"><div class="g-emoji">🎭</div><h4>Dragon Survival</h4><p>Serwer RPG</p></div>
+        <div class="game-card fi fi-d2"><div class="g-emoji">🌍</div><h4>Brother World</h4><p>Serwer dla widzow</p></div>
+        <div class="game-card fi fi-d3"><div class="g-emoji">🧩</div><h4>Mapy Adventure</h4><p>Custom maps MC</p></div>
+        <div class="game-card fi fi-d4"><div class="g-emoji">🔧</div><h4>Modpacki</h4><p>ATM, DawnCraft i wiecej</p></div>
     </div>
 </section>
 
@@ -399,8 +453,63 @@
 <script>
 const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>nav.classList.toggle('solid',scrollY>60));
+
+// Scroll progress
+const sp=document.getElementById('scrollProgress');
+window.addEventListener('scroll',()=>{
+    const h=document.documentElement.scrollHeight-window.innerHeight;
+    sp.style.width=(scrollY/h*100)+'%';
+});
+
+// Fade-in observer
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v')}),{threshold:.06});
 document.querySelectorAll('.fi').forEach(el=>obs.observe(el));
+
+// Particles
+(function(){
+    const c=document.getElementById('particles-canvas');
+    if(!c)return;
+    const ctx=c.getContext('2d');
+    let w,h,pts=[];
+    function resize(){w=c.width=c.offsetWidth;h=c.height=c.offsetHeight}
+    resize();window.addEventListener('resize',resize);
+    for(let i=0;i<60;i++)pts.push({x:Math.random()*2000,y:Math.random()*1200,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*2+.5,o:Math.random()*.4+.1});
+    function draw(){
+        ctx.clearRect(0,0,w,h);
+        pts.forEach(p=>{
+            p.x+=p.vx;p.y+=p.vy;
+            if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;
+            ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            ctx.fillStyle=`rgba(239,68,68,${p.o})`;ctx.fill();
+        });
+        for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+            const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+            if(d<120){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);
+            ctx.strokeStyle=`rgba(239,68,68,${.08*(1-d/120)})`;ctx.stroke()}
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+
+// 3D tilt on vid-cards
+document.querySelectorAll('.vid-card').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+        const r=card.getBoundingClientRect();
+        const x=(e.clientX-r.left)/r.width-.5;
+        const y=(e.clientY-r.top)/r.height-.5;
+        card.style.setProperty('--mx',(e.clientX-r.left)+'px');
+        card.style.setProperty('--my',(e.clientY-r.top)+'px');
+        const emb=card.querySelector('.vid-emb');
+        if(emb)emb.style.transform=`rotateX(${y*-6}deg) rotateY(${x*6}deg) scale(1.02)`;
+    });
+    card.addEventListener('mouseleave',()=>{
+        const emb=card.querySelector('.vid-emb');
+        if(emb)emb.style.transform='';
+    });
+});
+
+// Modal
 function openModal(listId,title){
     document.getElementById('modal-title').textContent=title;
     document.getElementById('modal-iframe').src='https://www.youtube.com/embed/videoseries?list='+listId;
