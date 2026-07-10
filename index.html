@@ -13,20 +13,29 @@
         :root{
             --bg:#050510;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);
             --border:rgba(255,255,255,.07);--text:#eee;--text2:rgba(255,255,255,.45);
-            --accent:#8b5cf6;--accent2:#a78bfa;--glow:rgba(139,92,246,.3);
-            --red:#ef4444;--green:#22c55e;--blue:#3b82f6;
+            --accent:#ef4444;--accent2:#f87171;--glow:rgba(239,68,68,.3);
+            --purple:#8b5cf6;--green:#22c55e;--blue:#3b82f6;
         }
         html{scroll-behavior:smooth}
         body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
+        /* BG */
         .hero-bg{position:absolute;inset:0;overflow:hidden;z-index:0}
-        .hero-bg .orb{position:absolute;border-radius:50%;filter:blur(120px);animation:float 25s ease-in-out infinite}
-        .orb-1{width:600px;height:600px;background:rgba(239,68,68,.1);top:-20%;left:-10%;animation-delay:0s}
-        .orb-2{width:500px;height:500px;background:rgba(139,92,246,.08);bottom:-15%;right:-5%;animation-delay:-8s}
-        .orb-3{width:350px;height:350px;background:rgba(59,130,246,.06);top:50%;left:40%;animation-delay:-16s}
-        @keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-30px) scale(1.05)}66%{transform:translate(-30px,20px) scale(.95)}}
-        .grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse at center,black 20%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at center,black 20%,transparent 70%)}
+        .hero-bg .orb{position:absolute;border-radius:50%;filter:blur(130px);animation:float 25s ease-in-out infinite}
+        .orb-1{width:700px;height:700px;background:rgba(239,68,68,.1);top:-25%;left:-15%;animation-delay:0s}
+        .orb-2{width:500px;height:500px;background:rgba(139,92,246,.07);bottom:-10%;right:-8%;animation-delay:-9s}
+        .orb-3{width:350px;height:350px;background:rgba(59,130,246,.05);top:35%;left:50%;animation-delay:-18s}
+        @keyframes float{0%,100%{transform:translate(0,0)}33%{transform:translate(50px,-40px)}66%{transform:translate(-40px,30px)}}
+        .grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse at center,black 15%,transparent 65%);-webkit-mask-image:radial-gradient(ellipse at center,black 15%,transparent 65%)}
 
+        /* DECORATIVE SHAPES */
+        .deco{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.03);pointer-events:none;z-index:0}
+        .deco-1{width:400px;height:400px;top:10%;right:-5%;animation:spin 60s linear infinite}
+        .deco-2{width:300px;height:300px;bottom:5%;left:-3%;animation:spin 45s linear infinite reverse}
+        .deco-3{width:200px;height:200px;top:50%;left:30%;animation:spin 30s linear infinite}
+        @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+        /* NAV */
         nav{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,4vw,60px);background:rgba(5,5,16,.5);backdrop-filter:blur(30px) saturate(1.5);border-bottom:1px solid var(--border);transition:all .3s}
         nav.solid{background:rgba(5,5,16,.92)}
         .n-brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:#fff}
@@ -38,59 +47,97 @@
         .n-links a:hover{color:#fff}
         .n-link-active{color:#fff!important}
         .n-launcher{background:linear-gradient(135deg,#8b5cf6,#7c3aed)!important;color:#fff!important;padding:10px 22px;border-radius:10px;display:inline-flex;align-items:center;gap:8px;transition:all .2s}
-        .n-launcher:hover{transform:translateY(-2px);box-shadow:0 8px 32px var(--glow)}
+        .n-launcher:hover{transform:translateY(-2px);box-shadow:0 8px 32px var(--purple);filter:brightness(1.1)}
 
+        /* HERO */
         .hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:clamp(100px,15vh,160px) clamp(20px,5vw,80px) 80px}
-        .hero-content{position:relative;z-index:2;max-width:700px}
-        .h-chip{display:inline-flex;align-items:center;gap:8px;padding:6px 18px 6px 10px;border-radius:100px;font-size:12px;font-weight:600;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);margin-bottom:28px}
-        .h-chip i{width:7px;height:7px;background:var(--red);border-radius:50%;animation:blink 2s infinite}
+        .hero-content{position:relative;z-index:2;max-width:720px}
+        .h-chip{display:inline-flex;align-items:center;gap:8px;padding:6px 18px 6px 10px;border-radius:100px;font-size:12px;font-weight:600;color:var(--accent2);background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);margin-bottom:28px}
+        .h-chip i{width:7px;height:7px;background:var(--accent);border-radius:50%;animation:blink 2s infinite}
         @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-        .hero h1{font-size:clamp(44px,8vw,80px);font-weight:900;line-height:1;letter-spacing:-3px;margin-bottom:24px}
-        .hero h1 em{font-style:normal;background:linear-gradient(135deg,#ef4444 0%,#f87171 50%,#ef4444 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
+        .hero h1{font-size:clamp(48px,9vw,88px);font-weight:900;line-height:1;letter-spacing:-3px;margin-bottom:24px}
+        .hero h1 em{font-style:normal;background:linear-gradient(135deg,#ef4444 0%,#fca5a5 50%,#ef4444 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
         @keyframes shimmer{0%{background-position:0% center}100%{background-position:200% center}}
-        .hero p{font-size:clamp(16px,2vw,18px);color:var(--text2);max-width:540px;margin:0 auto 40px;line-height:1.7}
+        .hero p{font-size:clamp(16px,2vw,19px);color:var(--text2);max-width:560px;margin:0 auto 0;line-height:1.7}
         .hero p strong{color:var(--text);font-weight:600}
-        .h-btns{display:flex;gap:14px;flex-wrap:wrap}
+        .h-btns{display:flex;gap:14px;flex-wrap:wrap;margin-top:40px}
         .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:13px;font-size:15px;font-weight:700;text-decoration:none;border:none;cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1)}
         .btn svg{width:20px;height:20px;flex-shrink:0}
-        .btn-red{background:var(--red);color:#fff;box-shadow:0 4px 24px rgba(239,68,68,.3)}
-        .btn-red:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(239,68,68,.4);background:#dc2626}
+        .btn-red{background:var(--accent);color:#fff;box-shadow:0 4px 24px var(--glow)}
+        .btn-red:hover{transform:translateY(-3px);box-shadow:0 12px 40px var(--glow);background:#dc2626}
         .btn-ghost{background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.1)}
         .btn-ghost:hover{background:rgba(255,255,255,.1);transform:translateY(-3px)}
 
-        .h-channels{margin-top:56px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
-        .h-channels span{font-size:13px;color:var(--text2);font-weight:500}
-        .h-channels a{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:12px;background:var(--surface);border:1px solid var(--border);text-decoration:none;color:var(--text);font-size:13px;font-weight:600;transition:all .2s}
-        .h-channels a:hover{background:var(--surface2);transform:translateY(-2px)}
-        .h-channels a svg{width:20px;height:20px}
+        .h-hero-vid{margin-top:60px;position:relative;z-index:2}
+        .h-hero-vid .embed-wrap{border-radius:20px;overflow:hidden;border:1px solid var(--border);box-shadow:0 24px 80px rgba(0,0,0,.5);position:relative;padding-top:56.25%}
+        .h-hero-vid iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
 
+        /* SECTIONS */
         section{position:relative;z-index:1;padding:clamp(60px,10vw,120px) clamp(20px,5vw,80px)}
         .s-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:3px;margin-bottom:12px}
         .s-title{font-size:clamp(28px,5vw,52px);font-weight:900;letter-spacing:-1.5px;line-height:1.1}
         .s-desc{color:var(--text2);font-size:16px;max-width:480px;margin:16px auto 0;line-height:1.6}
         .s-head{text-align:center;margin-bottom:56px}
 
-        .vids-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-        .vid-card{border-radius:16px;overflow:hidden;background:var(--surface);border:1px solid var(--border);transition:all .3s;text-decoration:none;color:inherit;display:block}
-        .vid-card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,.35);border-color:rgba(239,68,68,.15)}
+        /* PLAYLISTS */
+        .pl-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+        .pl-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:0;overflow:hidden;cursor:pointer;transition:all .3s;position:relative}
+        .pl-card:hover{transform:translateY(-5px);box-shadow:0 24px 60px rgba(0,0,0,.35);border-color:rgba(239,68,68,.15)}
+        .pl-thumb{position:relative;padding-top:56.25%;background:#111;overflow:hidden}
+        .pl-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s}
+        .pl-card:hover .pl-thumb img{transform:scale(1.05)}
+        .pl-thumb .pl-overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);display:grid;place-items:center;opacity:0;transition:opacity .3s}
+        .pl-card:hover .pl-overlay{opacity:1}
+        .pl-play{width:60px;height:60px;background:rgba(239,68,68,.9);border-radius:50%;display:grid;place-items:center;box-shadow:0 4px 24px rgba(239,68,68,.4)}
+        .pl-play svg{width:26px;height:26px;fill:#fff;margin-left:3px}
+        .pl-badge{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);padding:4px 10px;border-radius:8px;font-size:11px;font-weight:700;color:#fff;z-index:2}
+        .pl-info{padding:20px 24px}
+        .pl-info h3{font-size:16px;font-weight:700;margin-bottom:4px;line-height:1.3}
+        .pl-info p{font-size:12px;color:var(--text2)}
+
+        /* VIDEOS */
+        .vid-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+        .vid-card{border-radius:16px;overflow:hidden;background:var(--surface);border:1px solid var(--border);transition:all .3s;display:block}
+        .vid-card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,.35);border-color:rgba(239,68,68,.1)}
         .vid-emb{position:relative;padding-top:56.25%;background:#000}
         .vid-emb iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
         .vid-info{padding:16px 20px}
         .vid-info h4{font-size:14px;font-weight:600;line-height:1.4;margin-bottom:4px}
         .vid-info span{font-size:12px;color:var(--text2)}
 
-        .about-grid{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+        /* ABOUT */
+        .about-section{background:linear-gradient(180deg,transparent,rgba(239,68,68,.015),transparent)}
+        .about-grid{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
         .about-text h3{font-size:28px;font-weight:800;letter-spacing:-.5px;margin-bottom:16px}
-        .about-text p{font-size:15px;color:var(--text2);line-height:1.7;margin-bottom:12px}
+        .about-text p{font-size:15px;color:var(--text2);line-height:1.7;margin-bottom:14px}
         .about-text p strong{color:var(--text);font-weight:600}
-        .about-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px}
-        .about-card .ac-row{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--border)}
-        .about-card .ac-row:last-child{border:none}
-        .about-card .ac-icon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex-shrink:0}
-        .about-card .ac-icon svg{width:22px;height:22px}
-        .about-card .ac-row h4{font-size:14px;font-weight:600}
-        .about-card .ac-row p{font-size:12px;color:var(--text2)}
+        .about-text a{color:var(--accent2);text-decoration:none;font-weight:600}
+        .about-text a:hover{text-decoration:underline}
+        .about-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px}
+        .ac-row{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border)}
+        .ac-row:last-child{border:none}
+        .ac-ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;flex-shrink:0}
+        .ac-ic svg{width:24px;height:24px}
+        .ac-row h4{font-size:15px;font-weight:700}
+        .ac-row p{font-size:12px;color:var(--text2);margin-top:2px}
 
+        /* GAMES SECTION */
+        .games-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+        .game-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 20px;text-align:center;transition:all .3s}
+        .game-card:hover{background:var(--surface2);transform:translateY(-3px)}
+        .game-card .g-emoji{font-size:40px;margin-bottom:12px}
+        .game-card h4{font-size:14px;font-weight:700;margin-bottom:4px}
+        .game-card p{font-size:11px;color:var(--text2)}
+
+        /* CTA */
+        .cta-section{background:linear-gradient(180deg,transparent,rgba(239,68,68,.02),transparent);text-align:center}
+        .cta-box{max-width:700px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:60px 40px;position:relative;overflow:hidden}
+        .cta-box::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(239,68,68,.05),rgba(139,92,246,.05));pointer-events:none}
+        .cta-box h2{font-size:clamp(24px,4vw,36px);font-weight:900;letter-spacing:-1px;margin-bottom:12px;position:relative}
+        .cta-box p{color:var(--text2);font-size:15px;margin-bottom:28px;position:relative}
+        .cta-box .btn{position:relative}
+
+        /* FOOTER */
         footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:40px clamp(20px,5vw,80px)}
         .ft-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
         .ft-links{display:flex;gap:24px}
@@ -98,11 +145,34 @@
         .ft-links a:hover{color:#fff}
         .ft-copy{font-size:12px;color:var(--text2)}
 
+        /* MODAL */
+        .modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:40px;opacity:0;transition:opacity .3s}
+        .modal-overlay.open{display:flex;opacity:1}
+        .modal-box{background:#0a0a18;border:1px solid var(--border);border-radius:20px;max-width:900px;width:100%;overflow:hidden;position:relative;transform:scale(.95);transition:transform .3s}
+        .modal-overlay.open .modal-box{transform:scale(1)}
+        .modal-head{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border)}
+        .modal-head h3{font-size:16px;font-weight:700}
+        .modal-close{width:36px;height:36px;border-radius:10px;background:var(--surface);border:1px solid var(--border);color:var(--text);cursor:pointer;display:grid;place-items:center;transition:all .2s;font-size:18px}
+        .modal-close:hover{background:var(--surface2)}
+        .modal-embed{position:relative;padding-top:56.25%;background:#000}
+        .modal-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+
+        /* FADE */
         .fi{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
         .fi.v{opacity:1;transform:none}
 
-        @media(max-width:900px){.vids-grid{grid-template-columns:1fr 1fr}.about-grid{grid-template-columns:1fr}}
-        @media(max-width:600px){.vids-grid{grid-template-columns:1fr}.n-links a:not(.n-launcher){display:none}.ft-inner{flex-direction:column;text-align:center}.ft-links{justify-content:center}}
+        @media(max-width:900px){
+            .pl-grid,.vid-grid{grid-template-columns:1fr 1fr}
+            .about-grid{grid-template-columns:1fr}
+            .games-grid{grid-template-columns:1fr 1fr}
+        }
+        @media(max-width:600px){
+            .n-links a:not(.n-launcher){display:none}
+            .pl-grid,.vid-grid,.games-grid{grid-template-columns:1fr}
+            .ft-inner{flex-direction:column;text-align:center}
+            .ft-links{justify-content:center}
+            .modal-overlay{padding:16px}
+        }
     </style>
 </head>
 <body>
@@ -114,6 +184,7 @@
     </a>
     <div class="n-links">
         <a href="#videos" class="n-link-active">Filmy</a>
+        <a href="#playlists">Playlists</a>
         <a href="#about">O mnie</a>
         <a href="https://youtube.com/@brothergames4337" target="_blank">YouTube</a>
         <a href="launcher.html" class="n-launcher">
@@ -125,16 +196,14 @@
 
 <!-- HERO -->
 <section class="hero">
-    <div class="hero-bg">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-        <div class="grid-bg"></div>
-    </div>
+    <div class="hero-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div><div class="grid-bg"></div></div>
+    <div class="deco deco-1"></div>
+    <div class="deco deco-2"></div>
+    <div class="deco deco-3"></div>
     <div class="hero-content">
-        <div class="h-chip fi"><i></i> Aktywny kanal</div>
+        <div class="h-chip fi"><i></i> Nowy film co tydzien</div>
         <h1 class="fi">Brother<br><em>Games</em></h1>
-        <p class="fi">Gamingowy kanal na YouTube. <strong>Minecraft, League of Legends, RLCraft</strong> i wiele wiecej. Gramy, komentujemy, budujemy — razem z Wami.</p>
+        <p class="fi">Gamingowy kanal na YouTube. <strong>Minecraft, RLCraft, League of Legends</strong> i wiecej. Gramy, komentujemy, budujemy — razem z Wami.</p>
         <div class="h-btns fi">
             <a href="https://youtube.com/@brothergames4337" target="_blank" class="btn btn-red">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
@@ -145,39 +214,84 @@
                 Obejrzyj filmy
             </a>
         </div>
-        <div class="h-channels fi">
-            <span>Znajdz mnie tez na:</span>
-            <a href="https://www.youtube.com/@brothergames4337" target="_blank">
-                <svg viewBox="0 0 24 24" fill="#ef4444"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                YouTube
-            </a>
-            <a href="https://github.com/ghost0development" target="_blank">
-                <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
-                GitHub
-            </a>
+    </div>
+</section>
+
+<!-- NAJNOWSZY FILM (hero embed) -->
+<section id="videos" style="padding-bottom:40px">
+    <div class="s-head fi">
+        <div class="s-tag" style="color:var(--accent)">Najnowszy material</div>
+        <h2 class="s-title">WILCZY GLOD</h2>
+    </div>
+    <div class="h-hero-vid fi" style="max-width:900px;margin:0 auto">
+        <div class="embed-wrap">
+            <iframe src="https://www.youtube.com/embed/A2YZgB2i9Ew" title="Minecraft: WILCZY GLOD" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        </div>
+    </div>
+</section>
+
+<!-- PLAYLISTY -->
+<section id="playlists">
+    <div class="s-head fi">
+        <div class="s-tag" style="color:var(--purple)">Playlists</div>
+        <h2 class="s-title">Serie na kanale</h2>
+        <p class="s-desc">Kliknij playliste zeby ja odtworzyc</p>
+    </div>
+    <div class="pl-grid">
+        <div class="pl-card fi" onclick="openModal('PLdPTixy4ir50Do5YrkqzhY_0RHKhGdm6J','Dzien zaglady - seria fabularna')">
+            <div class="pl-thumb">
+                <img src="https://i.ytimg.com/vi/qbkjdMv171U/hqdefault.jpg" alt="Dzien zaglady" loading="lazy">
+                <div class="pl-overlay"><div class="pl-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+            </div>
+            <div class="pl-badge">PLAYLISTA</div>
+            <div class="pl-info">
+                <h3>Dzien zaglady - seria fabularna</h3>
+                <p>Playlista fabularna</p>
+            </div>
+        </div>
+        <div class="pl-card fi" onclick="openModal('PLdPTixy4ir51-f4ZTkDinVG9jlf0cg9n9','Dzien Zaglady 2024')">
+            <div class="pl-thumb">
+                <img src="https://i.ytimg.com/vi/VukeARAyFGM/hqdefault.jpg" alt="Dzien Zaglady 2024" loading="lazy">
+                <div class="pl-overlay"><div class="pl-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+            </div>
+            <div class="pl-badge">PLAYLISTA</div>
+            <div class="pl-info">
+                <h3>Dzien Zaglady 2024</h3>
+                <p>Nowa wersja serii</p>
+            </div>
+        </div>
+        <div class="pl-card fi" onclick="openModal('PLdPTixy4ir50OoQ8MvmWdpdFTuL-L0dRd','Serie zmodowane')">
+            <div class="pl-thumb">
+                <img src="https://i.ytimg.com/vi/dj8gOtpdQzk/hqdefault.jpg" alt="Serie zmodowane" loading="lazy">
+                <div class="pl-overlay"><div class="pl-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+            </div>
+            <div class="pl-badge">PLAYLISTA</div>
+            <div class="pl-info">
+                <h3>Serie zmodowane</h3>
+                <p>RLCraft, ATM i wiecej</p>
+            </div>
         </div>
     </div>
 </section>
 
 <!-- FILMY -->
-<section id="videos" style="background:linear-gradient(180deg,transparent,rgba(239,68,68,.01),transparent)">
+<section id="clips">
     <div class="s-head fi">
-        <div class="s-tag" style="color:var(--red)">YouTube</div>
-        <h2 class="s-title">Najnowsze filmy</h2>
-        <p class="s-desc">Swieze materialy prosto z kanalu</p>
+        <div class="s-tag" style="color:var(--accent)">Filmy</div>
+        <h2 class="s-title">Wybrane materialy</h2>
     </div>
-    <div class="vids-grid">
-        <div class="vid-card fi">
-            <div class="vid-emb"><iframe src="https://www.youtube.com/embed/A2YZgB2i9Ew" title="Minecraft: WILCZY GLOD" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
-            <div class="vid-info"><h4>Minecraft: WILCZY GLOD | Historia, Ktora Zostaje w Glowie</h4><span>81 wyswietlen</span></div>
-        </div>
-        <div class="vid-card fi">
-            <div class="vid-emb"><iframe src="https://www.youtube.com/embed/qbkjdMv171U" title="Krotka partyjka w LOLa" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
-            <div class="vid-info"><h4>Krotka partyjka w LOLa</h4><span>41 wyswietlen</span></div>
-        </div>
+    <div class="vid-grid">
         <div class="vid-card fi">
             <div class="vid-emb"><iframe src="https://www.youtube.com/embed/VukeARAyFGM" title="Uwiezieni w Petli Czasu" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
             <div class="vid-info"><h4>Uwiezieni w Petli Czasu - Mapa, ktora zmienia zasady gry!</h4><span>28 wyswietlen</span></div>
+        </div>
+        <div class="vid-card fi">
+            <div class="vid-emb"><iframe src="https://www.youtube.com/embed/dj8gOtpdQzk" title="RLCraft #1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+            <div class="vid-info"><h4>RLCraft #1 | Minecraft na modach</h4><span>Brother Games</span></div>
+        </div>
+        <div class="vid-card fi">
+            <div class="vid-emb"><iframe src="https://www.youtube.com/embed/A2YZgB2i9Ew" title="WILCZY GLOD" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+            <div class="vid-info"><h4>Minecraft: WILCZY GLOD | Historia, Ktora Zostaje w Glowie</h4><span>81 wyswietlen</span></div>
         </div>
     </div>
     <div style="text-align:center;margin-top:40px" class="fi">
@@ -188,41 +302,76 @@
     </div>
 </section>
 
+<!-- CO GRAM -->
+<section style="background:linear-gradient(180deg,transparent,rgba(139,92,246,.015),transparent)">
+    <div class="s-head fi">
+        <div class="s-tag" style="color:var(--green)">Co gram</div>
+        <h2 class="s-title">Gry na kanale</h2>
+    </div>
+    <div class="games-grid">
+        <div class="game-card fi"><div class="g-emoji">⛏️</div><h4>Minecraft</h4><p>Vanilla, mapy, serwery</p></div>
+        <div class="game-card fi"><div class="g-emoji">🐉</div><h4>RLCraft</h4><p>Hardcore survival mod</p></div>
+        <div class="game-card fi"><div class="g-emoji">⚔️</div><h4>League of Legends</h4><p>Ranked i normalne</p></div>
+        <div class="game-card fi"><div class="g-emoji">🏰</div><h4>Neverwinter</h4><p>MMORPG</p></div>
+        <div class="game-card fi"><div class="g-emoji">🎭</div><h4>Dragon Survival</h4><p>Serwer RPG</p></div>
+        <div class="game-card fi"><div class="g-emoji">🌍</div><h4>Brother World</h4><p>Serwer dla widzow</p></div>
+        <div class="game-card fi"><div class="g-emoji">🧩</div><h4>Mapy Adventure</h4><p>Custom maps MC</p></div>
+        <div class="game-card fi"><div class="g-emoji">🔧</div><h4>Modpacki</h4><p>ATM, modowane serie</p></div>
+    </div>
+</section>
+
 <!-- O MNIE -->
-<section id="about">
+<section id="about" class="about-section">
     <div class="about-grid">
         <div class="about-text fi">
             <div class="s-tag" style="color:var(--accent2)">O mnie</div>
             <h3>Kim jest Brother Games?</h3>
             <p><strong>Minecraft, RLCraft, League of Legends</strong> — gram we wszystko, co wciaga. Moje filmy to surowy material z live, poradniki i historie, ktore zostaja w glowie.</p>
             <p><strong>Brother World</strong> to moj serwer dla widzow — budujemy, eksplorujemy i tworzymy razem. Dołącz!</p>
-            <p>Tworze tez <a href="launcher.html" style="color:var(--accent2);text-decoration:none;font-weight:600">MC Map Launcher</a> — narzedzie do pobierania map z internetu jednym kliknieciem.</p>
+            <p>Tworze tez <a href="launcher.html">MC Map Launcher</a> — narzedzie do pobierania map z internetu jednym kliknieciem.</p>
+            <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+                <a href="https://youtube.com/@brothergames4337" target="_blank" class="btn btn-red" style="padding:12px 24px;font-size:13px">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    Subskrybuj
+                </a>
+                <a href="https://github.com/ghost0development" target="_blank" class="btn btn-ghost" style="padding:12px 24px;font-size:13px">GitHub</a>
+            </div>
         </div>
         <div class="about-card fi">
             <div class="ac-row">
-                <div class="ac-icon" style="background:rgba(239,68,68,.12)">
-                    <svg fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                </div>
+                <div class="ac-ic" style="background:rgba(239,68,68,.12)"><svg fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
                 <div><h4>15+ filmow</h4><p>Live, poradniki, gameplaye, shorty</p></div>
             </div>
             <div class="ac-row">
-                <div class="ac-icon" style="background:rgba(139,92,246,.12)">
-                    <svg fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                </div>
+                <div class="ac-ic" style="background:rgba(139,92,246,.12)"><svg fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
                 <div><h4>Brother World</h4><p>Wlasny serwer dla widzow</p></div>
             </div>
             <div class="ac-row">
-                <div class="ac-icon" style="background:rgba(34,197,94,.12)">
-                    <svg fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                </div>
+                <div class="ac-ic" style="background:rgba(34,197,94,.12)"><svg fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
                 <div><h4>MC Map Launcher</h4><p>Narzedzie do pobierania map</p></div>
             </div>
             <div class="ac-row">
-                <div class="ac-icon" style="background:rgba(56,189,248,.12)">
-                    <svg fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                </div>
+                <div class="ac-ic" style="background:rgba(56,189,248,.12)"><svg fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
                 <div><h4>Interakcja z widzami</h4><p>Commety, live, serwer dla widzow</p></div>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <div class="cta-box fi">
+        <h2>Gotowy na wiecej?</h2>
+        <p>Subskrybuj kanal i pobierz launcher — nie przegadaj zadnego materialu.</p>
+        <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative">
+            <a href="https://youtube.com/@brothergames4337" target="_blank" class="btn btn-red">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                Subskrybuj
+            </a>
+            <a href="launcher.html" class="btn btn-ghost">
+                <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" width="20" height="20"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                Pobierz Launcher
+            </a>
         </div>
     </div>
 </section>
@@ -238,11 +387,44 @@
     </div>
 </footer>
 
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <div class="modal-head">
+            <h3 id="modal-title">Playlista</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-embed">
+            <iframe id="modal-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
 <script>
+// Nav
 const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>nav.classList.toggle('solid',scrollY>60));
+
+// Fade-in
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v')}),{threshold:.06});
 document.querySelectorAll('.fi').forEach(el=>obs.observe(el));
+
+// Modal
+function openModal(listId,title){
+    const m=document.getElementById('modal');
+    document.getElementById('modal-title').textContent=title;
+    document.getElementById('modal-iframe').src='https://www.youtube.com/embed/videoseries?list='+listId;
+    m.classList.add('open');
+    document.body.style.overflow='hidden';
+}
+function closeModal(e){
+    if(e&&e.target!==e.currentTarget&&!e.target.closest('.modal-close'))return;
+    const m=document.getElementById('modal');
+    m.classList.remove('open');
+    document.getElementById('modal-iframe').src='';
+    document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 </script>
 </body>
 </html>
