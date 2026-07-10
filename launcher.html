@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Map Launcher — Brother Games</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --bg:#050510;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);
+            --border:rgba(255,255,255,.07);--text:#eee;--text2:rgba(255,255,255,.45);
+            --accent:#8b5cf6;--accent2:#a78bfa;--glow:rgba(139,92,246,.3);
+            --red:#ef4444;--green:#22c55e;--blue:#3b82f6;--orange:#f59e0b;
+        }
+        html{scroll-behavior:smooth}
+        body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+        .hero-bg{position:absolute;inset:0;overflow:hidden;z-index:0}
+        .hero-bg .orb{position:absolute;border-radius:50%;filter:blur(120px);animation:float 25s ease-in-out infinite}
+        .orb-1{width:600px;height:600px;background:rgba(139,92,246,.12);top:-20%;left:-10%;animation-delay:0s}
+        .orb-2{width:500px;height:500px;background:rgba(34,197,94,.08);bottom:-15%;right:-5%;animation-delay:-8s}
+        .orb-3{width:350px;height:350px;background:rgba(59,130,246,.06);top:50%;left:40%;animation-delay:-16s}
+        @keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-30px) scale(1.05)}66%{transform:translate(-30px,20px) scale(.95)}}
+        .grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse at center,black 20%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at center,black 20%,transparent 70%)}
+
+        nav{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,4vw,60px);background:rgba(5,5,16,.5);backdrop-filter:blur(30px) saturate(1.5);border-bottom:1px solid var(--border);transition:all .3s}
+        nav.solid{background:rgba(5,5,16,.92)}
+        .n-brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:#fff}
+        .n-logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#8b5cf6,#7c3aed);display:grid;place-items:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 24px var(--glow);letter-spacing:-.5px}
+        .n-name{font-size:18px;font-weight:800;letter-spacing:-.3px}
+        .n-name b{color:var(--accent2)}
+        .n-links{display:flex;align-items:center;gap:24px}
+        .n-links a{color:var(--text2);text-decoration:none;font-size:13px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;transition:color .2s}
+        .n-links a:hover{color:#fff}
+        .n-link-active{color:#fff!important}
+        .n-channel{background:var(--red)!important;color:#fff!important;padding:10px 22px;border-radius:10px;display:inline-flex;align-items:center;gap:8px;transition:all .2s}
+        .n-channel:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(239,68,68,.3)}
+
+        .hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:clamp(100px,15vh,160px) clamp(20px,5vw,80px) 80px;text-align:center}
+        .hero-content{position:relative;z-index:2;max-width:900px}
+        .h-chip{display:inline-flex;align-items:center;gap:8px;padding:6px 18px 6px 10px;border-radius:100px;font-size:12px;font-weight:600;color:var(--accent2);background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);margin-bottom:28px}
+        .h-chip i{width:7px;height:7px;background:var(--green);border-radius:50%;animation:blink 2s infinite}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+        .hero h1{font-size:clamp(44px,8vw,80px);font-weight:900;line-height:1;letter-spacing:-3px;margin-bottom:24px}
+        .hero h1 em{font-style:normal;background:linear-gradient(135deg,#8b5cf6 0%,#c4b5fd 50%,#8b5cf6 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
+        @keyframes shimmer{0%{background-position:0% center}100%{background-position:200% center}}
+        .hero p{font-size:clamp(16px,2vw,18px);color:var(--text2);max-width:580px;margin:0 auto 44px;line-height:1.7}
+        .hero p strong{color:var(--text);font-weight:600}
+        .h-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+        .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:13px;font-size:15px;font-weight:700;text-decoration:none;border:none;cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1)}
+        .btn svg{width:20px;height:20px;flex-shrink:0}
+        .btn-fill{background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:#fff;box-shadow:0 4px 24px var(--glow)}
+        .btn-fill:hover{transform:translateY(-3px);box-shadow:0 12px 40px var(--glow)}
+        .btn-ghost{background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.1)}
+        .btn-ghost:hover{background:rgba(255,255,255,.1);transform:translateY(-3px)}
+
+        section{position:relative;z-index:1;padding:clamp(60px,10vw,120px) clamp(20px,5vw,80px)}
+        .s-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:3px;margin-bottom:12px}
+        .s-title{font-size:clamp(28px,5vw,52px);font-weight:900;letter-spacing:-1.5px;line-height:1.1}
+        .s-desc{color:var(--text2);font-size:16px;max-width:480px;margin:16px auto 0;line-height:1.6}
+        .s-head{text-align:center;margin-bottom:56px}
+
+        .f-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1100px;margin:0 auto}
+        .f-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px 28px;transition:all .3s;position:relative;overflow:hidden}
+        .f-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(139,92,246,.06),transparent 60%);opacity:0;transition:opacity .3s}
+        .f-card:hover{border-color:rgba(139,92,246,.2);transform:translateY(-4px)}
+        .f-card:hover::before{opacity:1}
+        .f-ic{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;margin-bottom:18px;position:relative;z-index:1}
+        .f-ic svg{width:24px;height:24px}
+        .f-card h3{font-size:16px;font-weight:700;margin-bottom:8px;position:relative;z-index:1}
+        .f-card p{font-size:13px;color:var(--text2);line-height:1.65;position:relative;z-index:1}
+        .f-ic1{background:rgba(139,92,246,.12)}.f-ic1 svg{stroke:#8b5cf6}
+        .f-ic2{background:rgba(34,197,94,.12)}.f-ic2 svg{stroke:#22c55e}
+        .f-ic3{background:rgba(251,146,60,.12)}.f-ic3 svg{stroke:#fb923c}
+        .f-ic4{background:rgba(56,189,248,.12)}.f-ic4 svg{stroke:#38bdf8}
+        .f-ic5{background:rgba(244,114,182,.12)}.f-ic5 svg{stroke:#f472b6}
+        .f-ic6{background:rgba(250,204,21,.12)}.f-ic6 svg{stroke:#facc15}
+
+        .src-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+        .src-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:32px 24px;text-align:center;transition:all .3s;text-decoration:none;color:inherit;display:block}
+        .src-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.12);box-shadow:0 16px 48px rgba(0,0,0,.3)}
+        .src-logo{width:56px;height:56px;border-radius:14px;display:grid;place-items:center;margin:0 auto 16px;font-size:24px;font-weight:900}
+        .src-card h4{font-size:15px;font-weight:700;margin-bottom:4px}
+        .src-card p{font-size:12px;color:var(--text2);line-height:1.5}
+        .src-card .src-tag{display:inline-block;margin-top:10px;padding:4px 10px;border-radius:6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+
+        .dl-bg{background:linear-gradient(180deg,transparent,rgba(139,92,246,.02),transparent)}
+        .dl-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:760px;margin:0 auto}
+        .dl-card{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:48px 36px 40px;text-align:center;transition:all .35s;position:relative;overflow:hidden}
+        .dl-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+        .dl-card.lx::after{background:linear-gradient(90deg,#f59e0b,#22c55e)}
+        .dl-card.wn::after{background:linear-gradient(90deg,#3b82f6,#06b6d4)}
+        .dl-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.4);border-color:rgba(255,255,255,.12)}
+        .dl-card svg.os{width:72px;height:72px;margin-bottom:20px}
+        .dl-card h3{font-size:22px;font-weight:800;margin-bottom:6px}
+        .dl-card .dl-sub{font-size:13px;color:var(--text2);margin-bottom:28px}
+        .dl-card .btn{width:100%;justify-content:center}
+        .dl-cmd{margin-top:16px;padding:12px 16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.04);border-radius:10px;font-family:'SF Mono','Fira Code',monospace;font-size:11px;color:var(--green);word-break:break-all;text-align:left;line-height:1.5}
+        .dl-note{font-size:11px;color:var(--text2);margin-top:14px;line-height:1.5}
+
+        footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:40px clamp(20px,5vw,80px)}
+        .ft-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+        .ft-links{display:flex;gap:24px}
+        .ft-links a{color:var(--text2);text-decoration:none;font-size:13px;transition:color .2s}
+        .ft-links a:hover{color:#fff}
+        .ft-copy{font-size:12px;color:var(--text2)}
+
+        .fi{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
+        .fi.v{opacity:1;transform:none}
+
+        @media(max-width:900px){.f-grid{grid-template-columns:1fr 1fr}.src-grid{grid-template-columns:1fr 1fr}.dl-grid{grid-template-columns:1fr}}
+        @media(max-width:600px){.f-grid,.src-grid{grid-template-columns:1fr}.n-links a:not(.n-channel){display:none}.ft-inner{flex-direction:column;text-align:center}.ft-links{justify-content:center}}
+    </style>
+</head>
+<body>
+
+<nav id="nav">
+    <a href="index.html" class="n-brand">
+        <div class="n-logo">BG</div>
+        <div class="n-name">Brother<b>Games</b></div>
+    </a>
+    <div class="n-links">
+        <a href="#features">Funkcje</a>
+        <a href="#sources">Zrodla</a>
+        <a href="#download">Pobierz</a>
+        <a href="https://youtube.com/@brothergames4337" target="_blank" class="n-channel">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            YouTube
+        </a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div><div class="grid-bg"></div></div>
+    <div class="hero-content">
+        <div class="h-chip fi"><i></i> v1.0.0 — Dostepne teraz</div>
+        <h1 class="fi">MC Map<br><em>Launcher</em></h1>
+        <p class="fi">Pobieraj mapy z <strong>PlanetMinecraft, MinecraftMaps, polskiemapy.pl i minecraft.pl</strong> jednym kliknieciem. Auto-wersja, auto-instalacja, zero problemow.</p>
+        <div class="h-btns fi">
+            <a href="#download" class="btn btn-fill">
+                <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4 17h16"/></svg>
+                Pobierz za darmo
+            </a>
+            <a href="https://github.com/ghost0development/MC-MAP-LAUNCHER" target="_blank" class="btn btn-ghost">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                GitHub
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+    <div class="s-head fi">
+        <div class="s-tag" style="color:var(--accent2)">Funkcje</div>
+        <h2 class="s-title">Wszystko czego potrzebujesz</h2>
+        <p class="s-desc">Jeden launcher, ktory robi wszystko za Ciebie</p>
+    </div>
+    <div class="f-grid">
+        <div class="f-card fi">
+            <div class="f-ic f-ic1"><svg fill="none" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+            <h3>Wielozrodlowe szukanie</h3>
+            <p>Przeszukuj 4 zrodla map jednoczesnie. Najlepsze wyniki na gorze.</p>
+        </div>
+        <div class="f-card fi">
+            <div class="f-ic f-ic2"><svg fill="none" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+            <h3>Auto-wersja MC</h3>
+            <p>Wykrywa wymagana wersje i pobiera ja automatycznie.</p>
+        </div>
+        <div class="f-card fi">
+            <div class="f-ic f-ic3"><svg fill="none" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+            <h3>Auto-instalacja</h3>
+            <p>Rozpakowuje i instaluje mape jednym kliknieciem.</p>
+        </div>
+        <div class="f-card fi">
+            <div class="f-ic f-ic4"><svg fill="none" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+            <h3>Import z linkow</h3>
+            <p>Wklej link i gotowe. Launcher zajmie sie reszta.</p>
+        </div>
+        <div class="f-card fi">
+            <div class="f-ic f-ic5"><svg fill="none" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <h3>Wykrywanie swiata</h3>
+            <p>Automatycznie znajduje plik swiata i instaluje go we wlasciwe miejsce.</p>
+        </div>
+        <div class="f-card fi">
+            <div class="f-ic f-ic6"><svg fill="none" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="21 3 21 9 15 9"/></svg></div>
+            <h3>Auto-aktualizacje</h3>
+            <p>Sprawdza nowe wersje i aktualizuje sie sam.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ZRODLA MAP -->
+<section id="sources" style="background:linear-gradient(180deg,transparent,rgba(59,130,246,.015),transparent)">
+    <div class="s-head fi">
+        <div class="s-tag" style="color:var(--blue)">Zrodla map</div>
+        <h2 class="s-title">Skad pobieramy mapy?</h2>
+        <p class="s-desc">Cztery zrodla z tysiacami map do odkrycia</p>
+    </div>
+    <div class="src-grid">
+        <a href="https://www.planetminecraft.com/projects/" target="_blank" class="src-card fi">
+            <div class="src-logo" style="background:rgba(59,130,246,.12);color:#3b82f6">PMC</div>
+            <h4>PlanetMinecraft</h4>
+            <p>Najwieksza baza map Minecraft. Adventure, puzzle, parkour i wiecej.</p>
+            <span class="src-tag" style="background:rgba(59,130,246,.12);color:#60a5fa">2000+ map</span>
+        </a>
+        <a href="https://polskiemapy.pl/" target="_blank" class="src-card fi">
+            <div class="src-logo" style="background:rgba(239,68,68,.12);color:#ef4444">PM</div>
+            <h4>polskiemapy.pl</h4>
+            <p>Polskie mapy Minecrafta. Budowle, adventure, Redstone i survival.</p>
+            <span class="src-tag" style="background:rgba(239,68,68,.12);color:#f87171">Polskie</span>
+        </a>
+        <a href="https://www.minecraftmaps.com/" target="_blank" class="src-card fi">
+            <div class="src-logo" style="background:rgba(34,197,94,.12);color:#22c55e">MM</div>
+            <h4>MinecraftMaps</h4>
+            <p>Kuratorowane mapy MC. Adventure, parkour, survival, Redstone.</p>
+            <span class="src-tag" style="background:rgba(34,197,94,.12);color:#4ade80">500+ map</span>
+        </a>
+        <a href="https://minecraft.pl/mapy" target="_blank" class="src-card fi">
+            <div class="src-logo" style="background:rgba(251,146,60,.12);color:#fb923c">MC.PL</div>
+            <h4>minecraft.pl</h4>
+            <p>Polski portal MC. Mapy, poradniki, serwery, download.</p>
+            <span class="src-tag" style="background:rgba(251,146,60,.12);color:#fb923c">Polskie</span>
+        </a>
+    </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section id="download" class="dl-bg">
+    <div class="s-head fi">
+        <div class="s-tag" style="color:var(--green)">Pobierz</div>
+        <h2 class="s-title">Zacznij teraz</h2>
+        <p class="s-desc">Dostepny na Linux i Windows</p>
+    </div>
+    <div class="dl-grid">
+        <div class="dl-card lx fi">
+            <svg class="os" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <g transform="translate(60,58)"><ellipse cx="0" cy="42" rx="24" ry="8" fill="#f59e0b" opacity=".15"/><ellipse cx="0" cy="6" rx="30" ry="34" fill="#22c55e"/><ellipse cx="-17" cy="-20" rx="12" ry="14" fill="#22c55e"/><ellipse cx="17" cy="-20" rx="12" ry="14" fill="#22c55e"/><circle cx="-15" cy="-22" r="6" fill="#050510"/><circle cx="15" cy="-22" r="6" fill="#050510"/><circle cx="-15" cy="-22" r="3" fill="#fff"/><circle cx="15" cy="-22" r="3" fill="#fff"/><ellipse cx="-7" cy="-8" rx="4" ry="2.5" fill="#050510" opacity=".25"/><ellipse cx="7" cy="-8" rx="4" ry="2.5" fill="#050510" opacity=".25"/><ellipse cx="0" cy="2" rx="6" ry="3.5" fill="#f59e0b"/><rect x="-24" y="6" width="16" height="5" rx="2.5" fill="#16a34a"/><rect x="8" y="6" width="16" height="5" rx="2.5" fill="#16a34a"/><rect x="-22" y="34" width="12" height="5" rx="2.5" fill="#16a34a"/><rect x="10" y="34" width="12" height="5" rx="2.5" fill="#16a34a"/><line x1="-32" y1="-28" x2="-24" y2="-34" stroke="#16a34a" stroke-width="3.5" stroke-linecap="round"/><line x1="32" y1="-28" x2="24" y2="-34" stroke="#16a34a" stroke-width="3.5" stroke-linecap="round"/></g>
+            </svg>
+            <h3>Linux</h3>
+            <p class="dl-sub">AppImage — dziala na kazdej dystrybucji</p>
+            <a href="https://github.com/ghost0development/MC-MAP-LAUNCHER/releases/download/v1.0.0/MC-Map-Launcher-x86_64.AppImage" class="btn btn-fill" download>
+                <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4 17h16"/></svg>
+                Pobierz AppImage
+            </a>
+            <div class="dl-cmd">curl -fsSL https://raw.githubusercontent.com/ghost0development/MC-MAP-LAUNCHER/main/install.sh | bash</div>
+        </div>
+        <div class="dl-card wn fi">
+            <svg class="os" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="10" width="46" height="46" rx="5" fill="#3b82f6"/><rect x="64" y="10" width="46" height="46" rx="5" fill="#3b82f6"/><rect x="10" y="64" width="46" height="46" rx="5" fill="#3b82f6"/><rect x="64" y="64" width="46" height="46" rx="5" fill="#3b82f6"/><rect x="14" y="14" width="38" height="38" rx="3" fill="#06b6d4"/><rect x="68" y="14" width="38" height="38" rx="3" fill="#06b6d4"/><rect x="14" y="68" width="38" height="38" rx="3" fill="#06b6d4"/><rect x="68" y="68" width="38" height="38" rx="3" fill="#06b6d4"/>
+            </svg>
+            <h3>Windows</h3>
+            <p class="dl-sub">Plik .exe — kliknij i uruchom</p>
+            <a href="https://github.com/ghost0development/MC-MAP-LAUNCHER/releases/download/v1.0.0/MC-Map-Launcher.exe" class="btn btn-fill" download>
+                <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4 17h16"/></svg>
+                Pobierz .exe
+            </a>
+            <p class="dl-note">v1.0.0 — Jesli Windows ostrzega: Wiecej info → Uruchom mimo to</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="ft-inner">
+        <div class="ft-links">
+            <a href="index.html">Kanal YouTube</a>
+            <a href="https://youtube.com/@brothergames4337" target="_blank">YouTube</a>
+            <a href="https://github.com/ghost0development/MC-MAP-LAUNCHER" target="_blank">GitHub</a>
+        </div>
+        <div class="ft-copy">&copy; 2026 Brother Games</div>
+    </div>
+</footer>
+
+<script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('solid',scrollY>60));
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v')}),{threshold:.06});
+document.querySelectorAll('.fi').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
