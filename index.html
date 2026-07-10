@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+    <link rel="icon" type="image/webp" href="avatar.webp">
     <style>
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
         :root{
@@ -19,7 +19,6 @@
         html{scroll-behavior:smooth}
         body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
-        /* BG */
         .hero-bg{position:absolute;inset:0;overflow:hidden;z-index:0}
         .hero-bg .orb{position:absolute;border-radius:50%;filter:blur(130px);animation:float 25s ease-in-out infinite}
         .orb-1{width:700px;height:700px;background:rgba(239,68,68,.1);top:-25%;left:-15%;animation-delay:0s}
@@ -28,18 +27,11 @@
         @keyframes float{0%,100%{transform:translate(0,0)}33%{transform:translate(50px,-40px)}66%{transform:translate(-40px,30px)}}
         .grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse at center,black 15%,transparent 65%);-webkit-mask-image:radial-gradient(ellipse at center,black 15%,transparent 65%)}
 
-        /* DECORATIVE SHAPES */
-        .deco{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.03);pointer-events:none;z-index:0}
-        .deco-1{width:400px;height:400px;top:10%;right:-5%;animation:spin 60s linear infinite}
-        .deco-2{width:300px;height:300px;bottom:5%;left:-3%;animation:spin 45s linear infinite reverse}
-        .deco-3{width:200px;height:200px;top:50%;left:30%;animation:spin 30s linear infinite}
-        @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-
-        /* NAV */
         nav{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,4vw,60px);background:rgba(5,5,16,.5);backdrop-filter:blur(30px) saturate(1.5);border-bottom:1px solid var(--border);transition:all .3s}
         nav.solid{background:rgba(5,5,16,.92)}
         .n-brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:#fff}
-        .n-logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#ef4444,#dc2626);display:grid;place-items:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 24px rgba(239,68,68,.3);letter-spacing:-.5px}
+        .n-logo{width:42px;height:42px;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(239,68,68,.2);flex-shrink:0}
+        .n-logo img{width:100%;height:100%;object-fit:cover}
         .n-name{font-size:18px;font-weight:800;letter-spacing:-.3px}
         .n-name b{color:#f87171}
         .n-links{display:flex;align-items:center;gap:24px}
@@ -49,7 +41,6 @@
         .n-launcher{background:linear-gradient(135deg,#8b5cf6,#7c3aed)!important;color:#fff!important;padding:10px 22px;border-radius:10px;display:inline-flex;align-items:center;gap:8px;transition:all .2s}
         .n-launcher:hover{transform:translateY(-2px);box-shadow:0 8px 32px var(--purple);filter:brightness(1.1)}
 
-        /* HERO */
         .hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:clamp(100px,15vh,160px) clamp(20px,5vw,80px) 80px}
         .hero-content{position:relative;z-index:2;max-width:720px}
         .h-chip{display:inline-flex;align-items:center;gap:8px;padding:6px 18px 6px 10px;border-radius:100px;font-size:12px;font-weight:600;color:var(--accent2);background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);margin-bottom:28px}
@@ -69,17 +60,15 @@
         .btn-ghost:hover{background:rgba(255,255,255,.1);transform:translateY(-3px)}
 
         .h-hero-vid{margin-top:60px;position:relative;z-index:2}
-        .h-hero-vid .embed-wrap{border-radius:20px;overflow:hidden;border:1px solid var(--border);box-shadow:0 24px 80px rgba(0,0,0,.5);position:relative;padding-top:56.25%}
-        .h-hero-vid iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+        .embed-wrap{border-radius:20px;overflow:hidden;border:1px solid var(--border);box-shadow:0 24px 80px rgba(0,0,0,.5);position:relative;padding-top:56.25%}
+        .embed-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
 
-        /* SECTIONS */
         section{position:relative;z-index:1;padding:clamp(60px,10vw,120px) clamp(20px,5vw,80px)}
         .s-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:3px;margin-bottom:12px}
         .s-title{font-size:clamp(28px,5vw,52px);font-weight:900;letter-spacing:-1.5px;line-height:1.1}
         .s-desc{color:var(--text2);font-size:16px;max-width:480px;margin:16px auto 0;line-height:1.6}
         .s-head{text-align:center;margin-bottom:56px}
 
-        /* PLAYLISTS */
         .pl-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
         .pl-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:0;overflow:hidden;cursor:pointer;transition:all .3s;position:relative}
         .pl-card:hover{transform:translateY(-5px);box-shadow:0 24px 60px rgba(0,0,0,.35);border-color:rgba(239,68,68,.15)}
@@ -95,9 +84,8 @@
         .pl-info h3{font-size:16px;font-weight:700;margin-bottom:4px;line-height:1.3}
         .pl-info p{font-size:12px;color:var(--text2)}
 
-        /* VIDEOS */
-        .vid-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-        .vid-card{border-radius:16px;overflow:hidden;background:var(--surface);border:1px solid var(--border);transition:all .3s;display:block}
+        .vid-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+        .vid-card{border-radius:16px;overflow:hidden;background:var(--surface);border:1px solid var(--border);transition:all .3s}
         .vid-card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,.35);border-color:rgba(239,68,68,.1)}
         .vid-emb{position:relative;padding-top:56.25%;background:#000}
         .vid-emb iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
@@ -105,7 +93,13 @@
         .vid-info h4{font-size:14px;font-weight:600;line-height:1.4;margin-bottom:4px}
         .vid-info span{font-size:12px;color:var(--text2)}
 
-        /* ABOUT */
+        .games-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+        .game-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 20px;text-align:center;transition:all .3s}
+        .game-card:hover{background:var(--surface2);transform:translateY(-3px)}
+        .game-card .g-emoji{font-size:40px;margin-bottom:12px}
+        .game-card h4{font-size:14px;font-weight:700;margin-bottom:4px}
+        .game-card p{font-size:11px;color:var(--text2)}
+
         .about-section{background:linear-gradient(180deg,transparent,rgba(239,68,68,.015),transparent)}
         .about-grid{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
         .about-text h3{font-size:28px;font-weight:800;letter-spacing:-.5px;margin-bottom:16px}
@@ -121,15 +115,6 @@
         .ac-row h4{font-size:15px;font-weight:700}
         .ac-row p{font-size:12px;color:var(--text2);margin-top:2px}
 
-        /* GAMES SECTION */
-        .games-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-        .game-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 20px;text-align:center;transition:all .3s}
-        .game-card:hover{background:var(--surface2);transform:translateY(-3px)}
-        .game-card .g-emoji{font-size:40px;margin-bottom:12px}
-        .game-card h4{font-size:14px;font-weight:700;margin-bottom:4px}
-        .game-card p{font-size:11px;color:var(--text2)}
-
-        /* CTA */
         .cta-section{background:linear-gradient(180deg,transparent,rgba(239,68,68,.02),transparent);text-align:center}
         .cta-box{max-width:700px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:60px 40px;position:relative;overflow:hidden}
         .cta-box::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(239,68,68,.05),rgba(139,92,246,.05));pointer-events:none}
@@ -137,7 +122,6 @@
         .cta-box p{color:var(--text2);font-size:15px;margin-bottom:28px;position:relative}
         .cta-box .btn{position:relative}
 
-        /* FOOTER */
         footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:40px clamp(20px,5vw,80px)}
         .ft-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
         .ft-links{display:flex;gap:24px}
@@ -145,7 +129,6 @@
         .ft-links a:hover{color:#fff}
         .ft-copy{font-size:12px;color:var(--text2)}
 
-        /* MODAL */
         .modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:40px;opacity:0;transition:opacity .3s}
         .modal-overlay.open{display:flex;opacity:1}
         .modal-box{background:#0a0a18;border:1px solid var(--border);border-radius:20px;max-width:900px;width:100%;overflow:hidden;position:relative;transform:scale(.95);transition:transform .3s}
@@ -157,12 +140,12 @@
         .modal-embed{position:relative;padding-top:56.25%;background:#000}
         .modal-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
 
-        /* FADE */
         .fi{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
         .fi.v{opacity:1;transform:none}
 
         @media(max-width:900px){
-            .pl-grid,.vid-grid{grid-template-columns:1fr 1fr}
+            .pl-grid{grid-template-columns:1fr 1fr}
+            .vid-grid{grid-template-columns:1fr 1fr}
             .about-grid{grid-template-columns:1fr}
             .games-grid{grid-template-columns:1fr 1fr}
         }
@@ -179,7 +162,7 @@
 
 <nav id="nav">
     <a href="index.html" class="n-brand">
-        <div class="n-logo">BG</div>
+        <div class="n-logo"><img src="avatar.webp" alt="Brother Games"></div>
         <div class="n-name">Brother<b>Games</b></div>
     </a>
     <div class="n-links">
@@ -194,16 +177,13 @@
     </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
     <div class="hero-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div><div class="grid-bg"></div></div>
-    <div class="deco deco-1"></div>
-    <div class="deco deco-2"></div>
-    <div class="deco deco-3"></div>
     <div class="hero-content">
-        <div class="h-chip fi"><i></i> Nowy film co tydzien</div>
+        <div style="width:96px;height:96px;border-radius:24px;overflow:hidden;box-shadow:0 8px 40px rgba(239,68,68,.25);margin-bottom:28px" class="fi"><img src="avatar.webp" alt="Brother Games" style="width:100%;height:100%;object-fit:cover"></div>
+        <div class="h-chip fi"><i></i> Nowe filmy co tydzien</div>
         <h1 class="fi">Brother<br><em>Games</em></h1>
-        <p class="fi">Gamingowy kanal na YouTube. <strong>Minecraft, RLCraft, League of Legends</strong> i wiecej. Gramy, komentujemy, budujemy — razem z Wami.</p>
+        <p class="fi">Gamingowy kanal na YouTube. <strong>Minecraft, RLCraft, mapy adventure, League of Legends</strong> i wiecej. Gramy, komentujemy, budujemy — razem z Wami.</p>
         <div class="h-btns fi">
             <a href="https://youtube.com/@brothergames4337" target="_blank" class="btn btn-red">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
@@ -217,16 +197,57 @@
     </div>
 </section>
 
-<!-- NAJNOWSZY FILM (hero embed) -->
+<!-- NAJNOWSZY FILM -->
 <section id="videos" style="padding-bottom:40px">
     <div class="s-head fi">
         <div class="s-tag" style="color:var(--accent)">Najnowszy material</div>
-        <h2 class="s-title">WILCZY GLOD</h2>
+        <h2 class="s-title">Uwiezieni w Petli Czasu</h2>
+        <p class="s-desc">Mapa, ktora zmienia zasady gry</p>
     </div>
     <div class="h-hero-vid fi" style="max-width:900px;margin:0 auto">
         <div class="embed-wrap">
-            <iframe src="https://www.youtube.com/embed/A2YZgB2i9Ew" title="Minecraft: WILCZY GLOD" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            <iframe src="https://www.youtube.com/embed/VukeARAyFGM" title="Uwiezieni w Petli Czasu" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
         </div>
+    </div>
+</section>
+
+<!-- WSZYSTKIE FILMY -->
+<section id="all-videos">
+    <div class="s-head fi">
+        <div class="s-tag" style="color:var(--accent2)">Filmy</div>
+        <h2 class="s-title">Wszystkie materialy</h2>
+    </div>
+    <div class="vid-grid">
+        <div class="vid-card fi">
+            <div class="vid-emb"><iframe src="https://www.youtube.com/embed/A2YZgB2i9Ew" title="WILCZY GLOD" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+            <div class="vid-info"><h4>Minecraft: WILCZY GLOD | Historia, Ktora Zostaje w Glowie... i Sercu</h4><span>81 wyswietlen</span></div>
+        </div>
+        <div class="vid-card fi">
+            <div class="vid-emb"><iframe src="https://www.youtube.com/embed/Bc3es3-pds0" title="Nowa Ja | Nawiedzony dom?" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+            <div class="vid-info"><h4>Nowa Ja | Nawiedzony dom?</h4><span>64 wyswietlenia</span></div>
+        </div>
+        <div class="vid-card fi">
+            <div class="vid-emb"><iframe src="https://www.youtube.com/embed/dj8gOtpdQzk" title="RLCraft #1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+            <div class="vid-info"><h4>RLCraft #1 | Minecraft na modach</h4><span>Brother Games</span></div>
+        </div>
+        <div class="vid-card fi">
+            <div class="vid-emb"><iframe src="https://www.youtube.com/embed/pVw8KFNWsCM" title="Ciemna strona slonca" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+            <div class="vid-info"><h4>Ciemna strona slonca - Porabane</h4><span>Brother Games</span></div>
+        </div>
+        <div class="vid-card fi">
+            <div class="vid-emb"><iframe src="https://www.youtube.com/embed/sGDAV-E6z-I" title="Wyspa Mrozu cz.1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+            <div class="vid-info"><h4>Wyspa Mrozu I cz.1</h4><span>Brother Games</span></div>
+        </div>
+        <div class="vid-card fi">
+            <div class="vid-emb"><iframe src="https://www.youtube.com/embed/cvFqMuPbyPg" title="Wyspa Mrozu cz.2" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+            <div class="vid-info"><h4>Wyspa Mrozu I cz.2 - Troche zimno sie zrobilo</h4><span>Brother Games</span></div>
+        </div>
+    </div>
+    <div style="text-align:center;margin-top:40px" class="fi">
+        <a href="https://youtube.com/@brothergames4337" target="_blank" class="btn btn-ghost">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            Wszystkie filmy na YouTube
+        </a>
     </div>
 </section>
 
@@ -268,37 +289,9 @@
             <div class="pl-badge">PLAYLISTA</div>
             <div class="pl-info">
                 <h3>Serie zmodowane</h3>
-                <p>RLCraft, ATM i wiecej</p>
+                <p>RLCraft, DawnCraft, CavePolis i wiecej</p>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- FILMY -->
-<section id="clips">
-    <div class="s-head fi">
-        <div class="s-tag" style="color:var(--accent)">Filmy</div>
-        <h2 class="s-title">Wybrane materialy</h2>
-    </div>
-    <div class="vid-grid">
-        <div class="vid-card fi">
-            <div class="vid-emb"><iframe src="https://www.youtube.com/embed/VukeARAyFGM" title="Uwiezieni w Petli Czasu" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
-            <div class="vid-info"><h4>Uwiezieni w Petli Czasu - Mapa, ktora zmienia zasady gry!</h4><span>28 wyswietlen</span></div>
-        </div>
-        <div class="vid-card fi">
-            <div class="vid-emb"><iframe src="https://www.youtube.com/embed/dj8gOtpdQzk" title="RLCraft #1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
-            <div class="vid-info"><h4>RLCraft #1 | Minecraft na modach</h4><span>Brother Games</span></div>
-        </div>
-        <div class="vid-card fi">
-            <div class="vid-emb"><iframe src="https://www.youtube.com/embed/A2YZgB2i9Ew" title="WILCZY GLOD" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
-            <div class="vid-info"><h4>Minecraft: WILCZY GLOD | Historia, Ktora Zostaje w Glowie</h4><span>81 wyswietlen</span></div>
-        </div>
-    </div>
-    <div style="text-align:center;margin-top:40px" class="fi">
-        <a href="https://youtube.com/@brothergames4337" target="_blank" class="btn btn-ghost">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-            Wszystkie filmy na YouTube
-        </a>
     </div>
 </section>
 
@@ -316,7 +309,7 @@
         <div class="game-card fi"><div class="g-emoji">🎭</div><h4>Dragon Survival</h4><p>Serwer RPG</p></div>
         <div class="game-card fi"><div class="g-emoji">🌍</div><h4>Brother World</h4><p>Serwer dla widzow</p></div>
         <div class="game-card fi"><div class="g-emoji">🧩</div><h4>Mapy Adventure</h4><p>Custom maps MC</p></div>
-        <div class="game-card fi"><div class="g-emoji">🔧</div><h4>Modpacki</h4><p>ATM, modowane serie</p></div>
+        <div class="game-card fi"><div class="g-emoji">🔧</div><h4>Modpacki</h4><p>ATM, DawnCraft i wiecej</p></div>
     </div>
 </section>
 
@@ -327,7 +320,7 @@
             <div class="s-tag" style="color:var(--accent2)">O mnie</div>
             <h3>Kim jest Brother Games?</h3>
             <p><strong>Minecraft, RLCraft, League of Legends</strong> — gram we wszystko, co wciaga. Moje filmy to surowy material z live, poradniki i historie, ktore zostaja w glowie.</p>
-            <p><strong>Brother World</strong> to moj serwer dla widzow — budujemy, eksplorujemy i tworzymy razem. Dołącz!</p>
+            <p><strong>Brother World</strong> to moj serwer dla widzow — budujemy, eksplorujemy i tworzymy razem. Dolacz!</p>
             <p>Tworze tez <a href="launcher.html">MC Map Launcher</a> — narzedzie do pobierania map z internetu jednym kliknieciem.</p>
             <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
                 <a href="https://youtube.com/@brothergames4337" target="_blank" class="btn btn-red" style="padding:12px 24px;font-size:13px">
@@ -338,6 +331,10 @@
             </div>
         </div>
         <div class="about-card fi">
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)">
+                <div style="width:64px;height:64px;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(239,68,68,.2);flex-shrink:0"><img src="avatar.webp" alt="Brother Games" style="width:100%;height:100%;object-fit:cover"></div>
+                <div><h4 style="font-size:18px;font-weight:800">Brother Games</h4><p style="font-size:13px;color:var(--text2)">@brothergames4337</p></div>
+            </div>
             <div class="ac-row">
                 <div class="ac-ic" style="background:rgba(239,68,68,.12)"><svg fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
                 <div><h4>15+ filmow</h4><p>Live, poradniki, gameplaye, shorty</p></div>
@@ -387,7 +384,6 @@
     </div>
 </footer>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="modal" onclick="closeModal(event)">
     <div class="modal-box" onclick="event.stopPropagation()">
         <div class="modal-head">
@@ -401,26 +397,19 @@
 </div>
 
 <script>
-// Nav
 const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>nav.classList.toggle('solid',scrollY>60));
-
-// Fade-in
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v')}),{threshold:.06});
 document.querySelectorAll('.fi').forEach(el=>obs.observe(el));
-
-// Modal
 function openModal(listId,title){
-    const m=document.getElementById('modal');
     document.getElementById('modal-title').textContent=title;
     document.getElementById('modal-iframe').src='https://www.youtube.com/embed/videoseries?list='+listId;
-    m.classList.add('open');
+    document.getElementById('modal').classList.add('open');
     document.body.style.overflow='hidden';
 }
 function closeModal(e){
     if(e&&e.target!==e.currentTarget&&!e.target.closest('.modal-close'))return;
-    const m=document.getElementById('modal');
-    m.classList.remove('open');
+    document.getElementById('modal').classList.remove('open');
     document.getElementById('modal-iframe').src='';
     document.body.style.overflow='';
 }
