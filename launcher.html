@@ -30,7 +30,10 @@
         nav{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,4vw,60px);background:rgba(5,5,16,.5);backdrop-filter:blur(30px) saturate(1.5);border-bottom:1px solid var(--border);transition:all .3s}
         nav.solid{background:rgba(5,5,16,.92)}
         .n-brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:#fff}
-        .n-logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#8b5cf6,#7c3aed);display:grid;place-items:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 24px var(--glow);letter-spacing:-.5px}
+        .n-logo{width:42px;height:42px;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px var(--glow);flex-shrink:0;position:relative}
+        .n-logo img{width:100%;height:100%;object-fit:cover}
+        .n-logo::after{content:'';position:absolute;inset:-3px;border-radius:14px;border:2px solid var(--accent);opacity:0;animation:pulse-ring 2.5s ease-out infinite;pointer-events:none}
+        @keyframes pulse-ring{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.3);opacity:0}}
         .n-name{font-size:18px;font-weight:800;letter-spacing:-.3px}
         .n-name b{color:var(--accent2)}
         .n-links{display:flex;align-items:center;gap:24px}
@@ -109,8 +112,47 @@
         .ft-links a:hover{color:#fff}
         .ft-copy{font-size:12px;color:var(--text2)}
 
-        .fi{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
+        .hero-avatar-wrap{position:relative;display:inline-block;margin-bottom:32px}
+        .hero-avatar-wrap::before{content:'';position:absolute;inset:-8px;border-radius:50%;background:conic-gradient(from 0deg,#8b5cf6,#22c55e,#3b82f6,#8b5cf6);opacity:.45;filter:blur(16px);animation:glow-rotate 4s linear infinite;z-index:-1}
+        @keyframes glow-rotate{0%{filter:blur(16px) hue-rotate(0deg)}100%{filter:blur(16px) hue-rotate(360deg)}}
+        .hero-avatar{width:180px;height:180px;border-radius:50%;overflow:hidden;box-shadow:0 12px 60px rgba(139,92,246,.3);animation:avatar-float 6s ease-in-out infinite;border:3px solid rgba(139,92,246,.3)}
+        @keyframes avatar-float{0%,100%{transform:translateY(0)}25%{transform:translateY(-10px)}75%{transform:translateY(5px)}}
+        .hero-avatar img{width:100%;height:100%;object-fit:cover}
+
+        .fi{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1)}
         .fi.v{opacity:1;transform:none}
+        .fi-d1{transition-delay:.1s}.fi-d2{transition-delay:.2s}.fi-d3{transition-delay:.3s}
+        .fi-d4{transition-delay:.35s}.fi-d5{transition-delay:.4s}.fi-d6{transition-delay:.45s}
+
+        .scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--green));z-index:200;transition:width .1s;box-shadow:0 0 10px var(--glow)}
+
+        .scroll-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;animation:scroll-bounce 2s ease-in-out infinite;z-index:2}
+        .scroll-hint span{font-size:11px;color:var(--text2);letter-spacing:2px;text-transform:uppercase}
+        .scroll-hint .mouse{width:24px;height:38px;border:2px solid rgba(255,255,255,.2);border-radius:12px;position:relative}
+        .scroll-hint .mouse::after{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:3px;height:8px;background:var(--accent);border-radius:2px;animation:scroll-wheel 1.5s ease-in-out infinite}
+        @keyframes scroll-bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+        @keyframes scroll-wheel{0%,100%{opacity:1;transform:translateX(-50%) translateY(0)}100%{opacity:0;transform:translateX(-50%) translateY(12px)}}
+
+        #particles-canvas{position:absolute;inset:0;z-index:1;pointer-events:none}
+
+        .s-title{position:relative;display:inline-block}
+        .s-title::after{content:'';display:block;width:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:2px;margin-top:12px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+        .s-head.v .s-title::after{width:60px}
+
+        .f-card{perspective:800px}
+        .f-card:hover{transform:translateY(-6px) scale(1.01)}
+        .f-card::after{content:'';position:absolute;inset:0;border-radius:20px;opacity:0;transition:opacity .4s;pointer-events:none;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(139,92,246,.08),transparent 60%)}
+        .f-card:hover::after{opacity:1}
+
+        .src-card{transition:all .3s}
+        .src-card:hover{transform:translateY(-4px) scale(1.01);border-color:rgba(139,92,246,.2)}
+
+        .dl-card{transition:all .3s}
+        .dl-card:hover{transform:translateY(-4px)}
+
+        .btn-fill{position:relative;overflow:hidden}
+        .btn-fill::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;background:rgba(255,255,255,.15);border-radius:50%;transform:translate(-50%,-50%);transition:width .6s,height .6s}
+        .btn-fill:hover::before{width:300px;height:300px}
 
         @media(max-width:900px){.f-grid{grid-template-columns:1fr 1fr}.src-grid{grid-template-columns:1fr 1fr}.dl-grid{grid-template-columns:1fr}}
         @media(max-width:600px){.f-grid,.src-grid{grid-template-columns:1fr}.n-links a:not(.n-channel){display:none}.ft-inner{flex-direction:column;text-align:center}.ft-links{justify-content:center}}
@@ -118,9 +160,11 @@
 </head>
 <body>
 
+<div class="scroll-progress" id="scrollProgress"></div>
+
 <nav id="nav">
     <a href="index.html" class="n-brand">
-        <div class="n-logo">BG</div>
+        <div class="n-logo"><img src="launcher-logo-round.webp" alt="MC Map Launcher"></div>
         <div class="n-name">Brother<b>Games</b></div>
     </a>
     <div class="n-links">
@@ -136,12 +180,13 @@
 
 <!-- HERO -->
 <section class="hero">
-    <div class="hero-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div><div class="grid-bg"></div></div>
+    <div class="hero-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div><div class="grid-bg"></div><canvas id="particles-canvas"></canvas></div>
     <div class="hero-content">
-        <div class="h-chip fi"><i></i> v1.0.0 — Dostepne teraz</div>
-        <h1 class="fi">MC Map<br><em>Launcher</em></h1>
-        <p class="fi">Pobieraj mapy z <strong>PlanetMinecraft, MinecraftMaps, polskiemapy.pl i minecraft.pl</strong> jednym kliknieciem. Auto-wersja, auto-instalacja, zero problemow.</p>
-        <div class="h-btns fi">
+        <div class="hero-avatar-wrap fi"><div class="hero-avatar"><img src="launcher-logo-round.webp" alt="MC Map Launcher"></div></div>
+        <div class="h-chip fi fi-d1"><i></i> v1.0.0 — Dostepne teraz</div>
+        <h1 class="fi fi-d2">MC Map<br><em>Launcher</em></h1>
+        <p class="fi fi-d3">Pobieraj mapy z <strong>PlanetMinecraft, MinecraftMaps, polskiemapy.pl i minecraft.pl</strong> jednym kliknieciem. Auto-wersja, auto-instalacja, zero problemow.</p>
+        <div class="h-btns fi fi-d4">
             <a href="#download" class="btn btn-fill">
                 <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4 17h16"/></svg>
                 Pobierz za darmo
@@ -152,6 +197,7 @@
             </a>
         </div>
     </div>
+    <div class="scroll-hint"><div class="mouse"></div><span>Scroll</span></div>
 </section>
 
 <!-- FEATURES -->
@@ -162,32 +208,32 @@
         <p class="s-desc">Jeden launcher, ktory robi wszystko za Ciebie</p>
     </div>
     <div class="f-grid">
-        <div class="f-card fi">
+        <div class="f-card fi fi-d1">
             <div class="f-ic f-ic1"><svg fill="none" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
             <h3>Wielozrodlowe szukanie</h3>
             <p>Przeszukuj 4 zrodla map jednoczesnie. Najlepsze wyniki na gorze.</p>
         </div>
-        <div class="f-card fi">
+        <div class="f-card fi fi-d2">
             <div class="f-ic f-ic2"><svg fill="none" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
             <h3>Auto-wersja MC</h3>
             <p>Wykrywa wymagana wersje i pobiera ja automatycznie.</p>
         </div>
-        <div class="f-card fi">
+        <div class="f-card fi fi-d2">
             <div class="f-ic f-ic3"><svg fill="none" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
             <h3>Auto-instalacja</h3>
             <p>Rozpakowuje i instaluje mape jednym kliknieciem.</p>
         </div>
-        <div class="f-card fi">
+        <div class="f-card fi fi-d2">
             <div class="f-ic f-ic4"><svg fill="none" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
             <h3>Import z linkow</h3>
             <p>Wklej link i gotowe. Launcher zajmie sie reszta.</p>
         </div>
-        <div class="f-card fi">
+        <div class="f-card fi fi-d2">
             <div class="f-ic f-ic5"><svg fill="none" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg></div>
             <h3>Wykrywanie swiata</h3>
             <p>Automatycznie znajduje plik swiata i instaluje go we wlasciwe miejsce.</p>
         </div>
-        <div class="f-card fi">
+        <div class="f-card fi fi-d2">
             <div class="f-ic f-ic6"><svg fill="none" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="21 3 21 9 15 9"/></svg></div>
             <h3>Auto-aktualizacje</h3>
             <p>Sprawdza nowe wersje i aktualizuje sie sam.</p>
@@ -203,25 +249,25 @@
         <p class="s-desc">Cztery zrodla z tysiacami map do odkrycia</p>
     </div>
     <div class="src-grid">
-        <a href="https://www.planetminecraft.com/projects/" target="_blank" class="src-card fi">
+        <a href="https://www.planetminecraft.com/projects/" target="_blank" class="src-card fi fi-d1">
             <div class="src-logo" style="background:rgba(59,130,246,.12);color:#3b82f6">PMC</div>
             <h4>PlanetMinecraft</h4>
             <p>Najwieksza baza map Minecraft. Adventure, puzzle, parkour i wiecej.</p>
             <span class="src-tag" style="background:rgba(59,130,246,.12);color:#60a5fa">2000+ map</span>
         </a>
-        <a href="https://polskiemapy.pl/" target="_blank" class="src-card fi">
+        <a href="https://polskiemapy.pl/" target="_blank" class="src-card fi fi-d2">
             <div class="src-logo" style="background:rgba(239,68,68,.12);color:#ef4444">PM</div>
             <h4>polskiemapy.pl</h4>
             <p>Polskie mapy Minecrafta. Budowle, adventure, Redstone i survival.</p>
             <span class="src-tag" style="background:rgba(239,68,68,.12);color:#f87171">Polskie</span>
         </a>
-        <a href="https://www.minecraftmaps.com/" target="_blank" class="src-card fi">
+        <a href="https://www.minecraftmaps.com/" target="_blank" class="src-card fi fi-d3">
             <div class="src-logo" style="background:rgba(34,197,94,.12);color:#22c55e">MM</div>
             <h4>MinecraftMaps</h4>
             <p>Kuratorowane mapy MC. Adventure, parkour, survival, Redstone.</p>
             <span class="src-tag" style="background:rgba(34,197,94,.12);color:#4ade80">500+ map</span>
         </a>
-        <a href="https://minecraft.pl/mapy" target="_blank" class="src-card fi">
+        <a href="https://minecraft.pl/mapy" target="_blank" class="src-card fi fi-d4">
             <div class="src-logo" style="background:rgba(251,146,60,.12);color:#fb923c">MC.PL</div>
             <h4>minecraft.pl</h4>
             <p>Polski portal MC. Mapy, poradniki, serwery, download.</p>
@@ -279,8 +325,57 @@
 <script>
 const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>nav.classList.toggle('solid',scrollY>60));
+
+// Scroll progress
+const sp=document.getElementById('scrollProgress');
+window.addEventListener('scroll',()=>{
+    const h=document.documentElement.scrollHeight-window.innerHeight;
+    sp.style.width=(scrollY/h*100)+'%';
+});
+
+// Fade-in observer
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v')}),{threshold:.06});
 document.querySelectorAll('.fi').forEach(el=>obs.observe(el));
+
+// Particles
+(function(){
+    const c=document.getElementById('particles-canvas');
+    if(!c)return;
+    const ctx=c.getContext('2d');
+    let w,h,pts=[];
+    function resize(){w=c.width=c.offsetWidth;h=c.height=c.offsetHeight}
+    resize();window.addEventListener('resize',resize);
+    for(let i=0;i<50;i++)pts.push({x:Math.random()*2000,y:Math.random()*1200,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*2+.5,o:Math.random()*.35+.1});
+    function draw(){
+        ctx.clearRect(0,0,w,h);
+        pts.forEach(p=>{
+            p.x+=p.vx;p.y+=p.vy;
+            if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;
+            ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            ctx.fillStyle=`rgba(139,92,246,${p.o})`;ctx.fill();
+        });
+        for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+            const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+            if(d<120){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);
+            ctx.strokeStyle=`rgba(139,92,246,${.07*(1-d/120)})`;ctx.stroke()}
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+
+// 3D tilt on feature cards
+document.querySelectorAll('.f-card').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+        const r=card.getBoundingClientRect();
+        const x=(e.clientX-r.left)/r.width-.5;
+        const y=(e.clientY-r.top)/r.height-.5;
+        card.style.setProperty('--mx',(e.clientX-r.left)+'px');
+        card.style.setProperty('--my',(e.clientY-r.top)+'px');
+        card.style.transform=`translateY(-6px) rotateX(${y*-5}deg) rotateY(${x*5}deg) scale(1.01)`;
+    });
+    card.addEventListener('mouseleave',()=>{card.style.transform=''});
+});
 </script>
 </body>
 </html>
