@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brother Games - Minecraft Map Launcher</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a14;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --bg-card-hover: rgba(255, 255, 255, 0.06);
+            --border: rgba(255, 255, 255, 0.06);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --accent: #6c5ce7;
+            --accent-glow: rgba(108, 92, 231, 0.4);
+            --green: #00b894;
+            --green-glow: rgba(0, 184, 148, 0.3);
+            --red: #e17055;
+            --gradient-1: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            --gradient-2: linear-gradient(135deg, #00b894, #55efc4);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-gradient::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(108, 92, 231, 0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(0, 184, 148, 0.06) 0%, transparent 50%);
+            animation: bgPulse 20s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-2%, -1%) scale(1.05); }
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(10, 10, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 12px 40px;
+            background: rgba(10, 10, 20, 0.95);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-cta {
+            background: var(--gradient-1);
+            color: white !important;
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-weight: 600 !important;
+            transition: transform 0.2s, box-shadow 0.2s !important;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--accent-glow);
+        }
+
+        /* HERO */
+        .hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 40px 80px;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 8vw, 80px);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 560px;
+            margin: 0 auto 48px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(255,255,255,0.12);
+            transform: translateY(-3px);
+        }
+
+        .btn-icon {
+            font-size: 20px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            justify-content: center;
+            margin-top: 64px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* SECTION COMMON */
+        section {
+            position: relative;
+            z-index: 1;
+            padding: 100px 40px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 16px;
+            max-width: 500px;
+            margin: 16px auto 0;
+        }
+
+        /* FEATURES */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 36px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(255,255,255,0.1);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .feature-icon.purple { background: rgba(108, 92, 231, 0.15); }
+        .feature-icon.green { background: rgba(0, 184, 148, 0.15); }
+        .feature-icon.orange { background: rgba(225, 112, 85, 0.15); }
+        .feature-icon.blue { background: rgba(116, 185, 255, 0.15); }
+        .feature-icon.pink { background: rgba(253, 121, 168, 0.15); }
+        .feature-icon.yellow { background: rgba(253, 203, 110, 0.15); }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* DOWNLOAD SECTION */
+        .download-section {
+            background: linear-gradient(180deg, transparent 0%, rgba(108, 92, 231, 0.03) 50%, transparent 100%);
+        }
+
+        .download-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .download-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .download-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .download-card .os-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .download-card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .download-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .download-card .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .download-card .version {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 12px;
+        }
+
+        /* YOUTUBE SECTION */
+        .yt-section {
+            background: linear-gradient(180deg, transparent 0%, rgba(255, 0, 0, 0.02) 50%, transparent 100%);
+        }
+
+        .yt-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .yt-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .yt-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .yt-thumbnail {
+            position: relative;
+            padding-top: 56.25%;
+            background: #1a1a2e;
+        }
+
+        .yt-thumbnail img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .yt-thumbnail .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .yt-card:hover .play-overlay {
+            opacity: 1;
+        }
+
+        .play-btn {
+            width: 64px;
+            height: 64px;
+            background: rgba(255, 0, 0, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .yt-info {
+            padding: 20px 24px;
+        }
+
+        .yt-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .yt-info .yt-meta {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* FOOTER */
+        footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid var(--border);
+            padding: 40px;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* ANIMATIONS */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            nav {
+                padding: 12px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 120px 20px 60px;
+            }
+
+            .hero-stats {
+                gap: 24px;
+            }
+
+            section {
+                padding: 60px 20px;
+            }
+
+            .features-grid, .download-cards, .yt-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* PARTICLE CANVAS */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <canvas id="particles"></canvas>
+
+    <nav id="navbar">
+        <a href="#" class="logo">
+            <div class="logo-icon">🎮</div>
+            <div class="logo-text">Brother<span>Games</span></div>
+        </a>
+        <div class="nav-links">
+            <a href="#features">Funkcje</a>
+            <a href="#download">Pobierz</a>
+            <a href="#videos">Filmy</a>
+            <a href="https://youtube.com/@brothergames4337" target="_blank" class="nav-cta">YouTube</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                v1.0.0 — Dostepne teraz
+            </div>
+            <h1>
+                Pobieraj mapy<br>
+                <span class="gradient-text">jednym kliknieciem</span>
+            </h1>
+            <p>
+                MC Map Launcher automatycznie pobiera wymagana wersje Minecrafta,
+                wykrywa i instaluje mapy. Zero konfiguracji.
+            </p>
+            <div class="hero-buttons">
+                <a href="#download" class="btn btn-primary">
+                    <span class="btn-icon">⬇️</span>
+                    Pobierz za darmo
+                </a>
+                <a href="https://github.com/ghost0development/MC-MAP-LAUNCHER" target="_blank" class="btn btn-secondary">
+                    <span class="btn-icon">📦</span>
+                    GitHub
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number" id="maps-count">3</div>
+                    <div class="stat-label">Zrodla map</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">5000+</div>
+                    <div class="stat-label">Map do pobrania</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Platformy</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features">
+        <div class="section-header fade-in">
+            <div class="section-label">Funkcje</div>
+            <h2 class="section-title">Wszystko czego potrzebujesz</h2>
+            <p class="section-desc">Jeden launcher, ktory robi wszystko za Ciebie</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <div class="feature-icon purple">🔍</div>
+                <h3>Wielozrodlowe wyszukiwanie</h3>
+                <p>Przeszukuj CurseForge, 9Minecraft i Minecraft.pl jednoczesnie. Najlepsze wyniki na gorze.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon green">⚡</div>
+                <h3>Auto-wersja Minecrafta</h3>
+                <p>Launcher wykrywa wymagana wersje i pobiera ja automatycznie. Zadnych bledow "wrong version".</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon orange">📁</div>
+                <h3>Automatyczna instalacja</h3>
+                <p>Mapa jest rozpakowywana i instalowana do odpowiedniej instancji jednym kliknieciem.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon blue">🔗</div>
+                <h3>Import z linkow</h3>
+                <p>Wklej link z CurseForge lub 9Minecraft i gotowe. Launcher zajmie sie reszta.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon pink">🎯</div>
+                <h3>Wykrywanie swiata</h3>
+                <p>Automatycznie znajduje plik swiata w archiwum i instaluje go we wlasciwe miejsce.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon yellow">🚀</div>
+                <h3>Auto-aktualizacje</h3>
+                <p>Launcher sprawdza nowe wersje i aktualizuje sie sam. Zawsze najnowsza wersja.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- DOWNLOAD -->
+    <section id="download" class="download-section">
+        <div class="section-header fade-in">
+            <div class="section-label">Pobierz</div>
+            <h2 class="section-title">Zacznij teraz</h2>
+            <p class="section-desc">Dostepny na Linux i Windows</p>
+        </div>
+        <div class="download-cards">
+            <div class="download-card fade-in">
+                <div class="os-icon">🐧</div>
+                <h3>Linux</h3>
+                <p>AppImage — dziala na kazdej dystrybucji</p>
+                <a href="https://github.com/ghost0development/MC-MAP-LAUNCHER/releases/download/v1.0.0/MC-Map-Launcher-x86_64.AppImage"
+                   class="btn btn-primary" download>
+                    <span class="btn-icon">⬇️</span>
+                    Pobierz AppImage
+                </a>
+                <p class="version">lub via terminal:</p>
+                <code style="display:block; margin-top:8px; padding:12px; background:rgba(255,255,255,0.05); border-radius:8px; font-size:12px; color:var(--green); word-break:break-all;">
+                    curl -fsSL https://raw.githubusercontent.com/ghost0development/MC-MAP-LAUNCHER/main/install.sh | bash
+                </code>
+            </div>
+            <div class="download-card fade-in">
+                <div class="os-icon">🪟</div>
+                <h3>Windows</h3>
+                <p>Plik .exe — kliknij i uruchom</p>
+                <a href="https://github.com/ghost0development/MC-MAP-LAUNCHER/releases/download/v1.0.0/MC-Map-Launcher.exe"
+                   class="btn btn-primary" download>
+                    <span class="btn-icon">⬇️</span>
+                    Pobierz .exe
+                </a>
+                <p class="version">v1.0.0 — Jesli Windows ostrzega: Wiecej info → Uruchom mimo to</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- YOUTUBE -->
+    <section id="videos" class="yt-section">
+        <div class="section-header fade-in">
+            <div class="section-label" style="color: #ff0000;">YouTube</div>
+            <h2 class="section-title">Brother Games</h2>
+            <p class="section-desc">Filmy, poradniki i gameplaye</p>
+        </div>
+        <div class="yt-grid" id="yt-grid">
+            <div class="yt-card fade-in">
+                <div class="yt-thumbnail" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a1a2e,#2d1b69);">
+                    <span style="font-size:64px;">🎮</span>
+                    <div class="play-overlay"><div class="play-btn">▶</div></div>
+                </div>
+                <div class="yt-info">
+                    <h3>MC Map Launcher — jak dziala?</h3>
+                    <p class="yt-meta">Brother Games</p>
+                </div>
+            </div>
+            <div class="yt-card fade-in">
+                <div class="yt-thumbnail" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0a3d0a,#1a4a1a);">
+                    <span style="font-size:64px;">⛏️</span>
+                    <div class="play-overlay"><div class="play-btn">▶</div></div>
+                </div>
+                <div class="yt-info">
+                    <h3>Najlepsze mapy Minecraft 2026</h3>
+                    <p class="yt-meta">Brother Games</p>
+                </div>
+            </div>
+            <div class="yt-card fade-in">
+                <div class="yt-thumbnail" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#3d1a0a,#4a2a1a);">
+                    <span style="font-size:64px;">🏗️</span>
+                    <div class="play-overlay"><div class="play-btn">▶</div></div>
+                </div>
+                <div class="yt-info">
+                    <h3>Budowanie map krok po kroku</h3>
+                    <p class="yt-meta">Brother Games</p>
+                </div>
+            </div>
+        </div>
+        <div style="text-align:center; margin-top:40px;" class="fade-in">
+            <a href="https://youtube.com/@brothergames4337" target="_blank" class="btn btn-secondary">
+                <span class="btn-icon">▶️</span>
+                Wszystkie filmy na YouTube
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-links">
+            <a href="https://youtube.com/@brothergames4337" target="_blank">YouTube</a>
+            <a href="https://github.com/ghost0development/MC-MAP-LAUNCHER" target="_blank">GitHub</a>
+            <a href="https://github.com/ghost0development/brother-games-land" target="_blank">Source</a>
+        </div>
+        <p>&copy; 2026 Brother Games. Zbudowane z ❤️</p>
+    </footer>
+
+    <script>
+        // Navbar scroll
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Fade-in on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Particles
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        for (let i = 0; i < 50; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.3,
+                vy: (Math.random() - 0.5) * 0.3,
+                r: Math.random() * 2 + 0.5,
+                a: Math.random() * 0.3 + 0.1
+            });
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(108, 92, 231, ${p.a})`;
+                ctx.fill();
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+            });
+            requestAnimationFrame(drawParticles);
+        }
+        drawParticles();
+
+        // Fetch YouTube videos
+        fetch('https://www.youtube.com/feeds/videos.xml?channel_id=UC_CHANNEL_ID')
+            .then(r => r.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(data, 'text/xml');
+                const entries = xml.querySelectorAll('entry');
+                const grid = document.getElementById('yt-grid');
+                if (entries.length > 0) {
+                    grid.innerHTML = '';
+                    entries.forEach(entry => {
+                        const title = entry.querySelector('title')?.textContent || '';
+                        const id = entry.querySelector('id')?.textContent?.split(':').pop() || '';
+                        const thumbnail = `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
+                        grid.innerHTML += `
+                            <a href="https://youtube.com/watch?v=${id}" target="_blank" class="yt-card fade-in" style="text-decoration:none;color:inherit;">
+                                <div class="yt-thumbnail">
+                                    <img src="${thumbnail}" alt="${title}" loading="lazy">
+                                    <div class="play-overlay"><div class="play-btn">▶</div></div>
+                                </div>
+                                <div class="yt-info">
+                                    <h3>${title}</h3>
+                                    <p class="yt-meta">Brother Games</p>
+                                </div>
+                            </a>
+                        `;
+                    });
+                    document.querySelectorAll('.yt-card.fade-in').forEach(el => observer.observe(el));
+                }
+            })
+            .catch(() => {});
+    </script>
+</body>
+</html>
